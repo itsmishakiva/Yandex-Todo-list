@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:todo_list/data/db_client.dart';
-import 'package:todo_list/data/web_service.dart';
+import 'package:todo_list/data/local/db_client.dart';
+import 'package:todo_list/data/web/web_service.dart';
 
 import '../../domain/task_model.dart';
 
@@ -30,10 +30,6 @@ class DataRepository with ChangeNotifier {
     _webService.removeTask(task);
   }
 
-  Future<void> syncData() async {
-    _webService.syncData(await _dbClient.getAllTasks());
-  }
-
   Stream<List<TaskModel>> getAllTasksStream() {
     final Stream<List<TaskModel>> tasks = (() {
       late final StreamController<List<TaskModel>> controller;
@@ -41,8 +37,12 @@ class DataRepository with ChangeNotifier {
         onListen: () async {
           List<TaskModel> tasks = await _dbClient.getAllTasks();
           controller.add(tasks);
-          await _webService.getTasks();
-          await syncData();
+          await _webService.syncData(await _dbClient.getAllTasks());
+          for (var task in await _webService.getTasks()) {
+            if (!tasks.contains(task)) {
+              await _dbClient.insertTask(task);
+            }
+          }
           await controller.close();
         },
       );

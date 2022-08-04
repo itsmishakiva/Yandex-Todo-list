@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 
-import '../domain/task_model.dart';
+import '../../domain/task_model.dart';
 
 class WebService {
   late int revision;
@@ -15,6 +15,7 @@ class WebService {
   );
 
   Future<void> syncData(List<TaskModel> tasks) async {
+    await getTasks();
     List<Map<String, dynamic>> apiTasks = [];
     for (var element in tasks) {
       apiTasks.add(element.toApiMap());

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/data/db_client.dart';
+import 'package:todo_list/data/local/db_client.dart';
 import 'package:todo_list/data/reposiroty/data_repository.dart';
 import 'package:todo_list/domain/task_model.dart';
 
