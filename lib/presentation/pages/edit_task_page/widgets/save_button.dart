@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/data/db_client.dart';
+import 'package:todo_list/data/reposiroty/data_repository.dart';
 import 'package:todo_list/domain/task_model.dart';
 
 import '../../../navigation/navigation_controller.dart';
@@ -31,9 +32,9 @@ class SaveButton extends StatelessWidget {
             if (task!.createdAt == null) {
               task!.createdAt =
                   DateTime.now().millisecondsSinceEpoch ~/ 100;
-              context.read<DBClient>().insertTask(task!);
+              context.read<DataRepository>().insertTask(task!);
             } else {
-              context.read<DBClient>().updateTask(task!);
+              context.read<DataRepository>().updateTask(task!);
             }
             context.read<NavigationController>().pop();
           } else {
@@ -41,9 +42,21 @@ class SaveButton extends StatelessWidget {
               context: context,
               builder: (context) {
                 return Center(
-                  child: Text(
-                    'Empty name!',
-                    style: Theme.of(context).textTheme.headline1,
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Container(
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.empty_name,
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                      ),
+                    ),
                   ),
                 );
               },

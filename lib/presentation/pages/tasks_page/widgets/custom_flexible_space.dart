@@ -10,10 +10,12 @@ class CustomFlexibleSpace extends StatelessWidget {
     required this.expandedHeight,
     required this.action,
     required this.doneTasksCount,
+    this.customTitle,
   }) : super(key: key);
   final double expandedHeight;
   final int doneTasksCount;
   final Widget action;
+  final String? customTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class CustomFlexibleSpace extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.myTasks,
+                    customTitle ?? AppLocalizations.of(context)!.myTasks,
                     style: Theme.of(context).textTheme.headline1?.copyWith(
                       fontSize: 20 + 12 * currentValue,
                     ),

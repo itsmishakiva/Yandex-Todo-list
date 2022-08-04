@@ -1,17 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../domain/task_model.dart';
 
-class DBClient with ChangeNotifier{
+class DBClient {
   DBClient();
 
   static late Future<Database> database;
 
   static Future<void> openDataBase() async {
     database = openDatabase(
-      join(await getDatabasesPath(), 'tasks.db'),
+      join(await getDatabasesPath(), 'todo.db'),
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE tasks('
@@ -19,9 +18,11 @@ class DBClient with ChangeNotifier{
           ' text TEXT,'
           ' done INTEGER,'
           ' importance TEXT,'
-          ' updatedAt INTEGER,'
-          ' createdAt INTEGER,'
-          ' deadline INTEGER)',
+          ' changed_at INTEGER,'
+          ' created_at INTEGER,'
+          ' deadline INTEGER,'
+          ' last_updated_by TEXT,'
+          ' color INTEGER )',
         );
       },
       version: 1,
@@ -36,7 +37,6 @@ class DBClient with ChangeNotifier{
       task.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    notifyListeners();
   }
 
   Future<void> removeTask(TaskModel task) async {
@@ -46,7 +46,6 @@ class DBClient with ChangeNotifier{
       where: 'id = ?',
       whereArgs: [task.id],
     );
-    notifyListeners();
   }
 
   Future<void> updateTask(TaskModel task) async {
@@ -57,7 +56,6 @@ class DBClient with ChangeNotifier{
       where: 'id = ?',
       whereArgs: [task.id],
     );
-    notifyListeners();
   }
 
   Future<List<TaskModel>> getAllTasks() async {
@@ -66,10 +64,10 @@ class DBClient with ChangeNotifier{
     return List.generate(maps.length, (i) {
       return TaskModel(
         id: maps[i]['id'],
-        createdAt: maps[i]['createdAt'],
+        createdAt: maps[i]['created_at'],
         done: maps[i]['done'],
         deadline: maps[i]['deadline'],
-        updatedAt: maps[i]['updatedAt'],
+        updatedAt: maps[i]['changed_at'],
         text: maps[i]['text'],
         importance: maps[i]['importance'],
       );

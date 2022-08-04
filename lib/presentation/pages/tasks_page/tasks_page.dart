@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/data/db_client.dart';
+import 'package:todo_list/data/reposiroty/data_repository.dart';
 import 'package:todo_list/presentation/navigation/navigation_controller.dart';
 import 'package:todo_list/presentation/pages/tasks_page/widgets/custom_flexible_space.dart';
 import 'package:todo_list/presentation/pages/tasks_page/widgets/dismissible_task.dart';
@@ -27,21 +30,18 @@ class _TasksPageState extends State<TasksPage> {
     return value;
   }
 
-  void updateTask(TaskModel updatedTask, DBClient client) async {
-    await client.updateTask(updatedTask);
-  }
-
   void editTask({TaskModel? task}) {
     context.read<NavigationController>().navigateTo('/edit_tasks');
   }
 
   @override
   Widget build(BuildContext context) {
+    context.read<Logger>().fine('test message');
     return Scaffold(
-      body: Consumer<DBClient>(
-        builder: (context, client, child) {
-          return FutureBuilder<List<TaskModel>>(
-            future: client.getAllTasks(),
+      body: Consumer<DataRepository>(
+        builder: (context, data, child) {
+          return StreamBuilder<List<TaskModel>>(
+            stream: data.getAllTasksStream(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(
@@ -63,6 +63,11 @@ class _TasksPageState extends State<TasksPage> {
                     elevation: 4,
                     expandedHeight: 146,
                     backgroundColor: const Color(0xFFF7F6F2),
+                    systemOverlayStyle: const SystemUiOverlayStyle(
+                      statusBarColor: Colors.transparent,
+                      statusBarIconBrightness: Brightness.dark,
+                      statusBarBrightness: Brightness.light,
+                    ),
                     flexibleSpace: CustomFlexibleSpace(
                       doneTasksCount: getDoneCount(snapshot.data!),
                       expandedHeight: 146,
@@ -132,16 +137,16 @@ class _TasksPageState extends State<TasksPage> {
                                   onDelete: () async {
                                     var task = snapshot.data![index];
                                     snapshot.data!.removeAt(index);
-                                    await client.removeTask(task);
+                                    data.removeTask(task);
                                   },
                                   onMarkedDone: () async {
                                     snapshot.data![index].done = 1;
-                                    updateTask(snapshot.data![index], client);
+                                    data.updateTask(snapshot.data![index]);
                                   },
                                   onCheckBoxChanged: (value) async {
                                     snapshot.data![index].done =
                                         snapshot.data![index].done == 0 ? 1 : 0;
-                                    updateTask(snapshot.data![index], client);
+                                    data.updateTask(snapshot.data![index]);
                                   },
                                 )
                               : const SizedBox();
