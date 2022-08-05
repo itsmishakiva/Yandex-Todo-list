@@ -25,29 +25,50 @@ class DataRepository with ChangeNotifier {
   }
 
   void removeTask(TaskModel task) async {
-    await _dbClient.removeTask(task);
+    _dbClient.updateTask(task..isDeleted = true);
     notifyListeners();
-    _webService.removeTask(task);
+    bool removed = await _webService.removeTask(task);
+    if (removed) {
+      await _dbClient.removeTask(task);
+    }
+  }
+
+  Future<void> _syncData() async {
+    await _webService.getTasks();
+    for (TaskModel task in await _dbClient.getRemovedTasks()) {
+      bool removed = await _webService.removeTask(task);
+      if (removed) {
+        await _dbClient.removeTask(task);
+      }
+    }
+    List<TaskModel> activeTasks = await _dbClient.getActiveTasks();
+    await _webService.syncData(activeTasks);
+    for (TaskModel webTask in await _webService.getTasks()) {
+      bool found = false;
+      for (TaskModel dbTask in activeTasks) {
+        if (webTask.id == dbTask.id && (webTask.updatedAt ?? 0) > (dbTask.updatedAt ?? 0)) {
+          await _dbClient.updateTask(webTask);
+        } else if (webTask.id == dbTask.id) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        await _dbClient.insertTask(webTask);
+      }
+    }
   }
 
   Stream<List<TaskModel>> getAllTasksStream() {
-    final Stream<List<TaskModel>> tasks = (() {
-      late final StreamController<List<TaskModel>> controller;
-      controller = StreamController<List<TaskModel>>(
-        onListen: () async {
-          List<TaskModel> tasks = await _dbClient.getAllTasks();
-          controller.add(tasks);
-          await _webService.syncData(await _dbClient.getAllTasks());
-          for (var task in await _webService.getTasks()) {
-            if (!tasks.contains(task)) {
-              await _dbClient.insertTask(task);
-            }
-          }
-          await controller.close();
-        },
-      );
-      return controller.stream;
-    })();
-    return tasks;
+    late final StreamController<List<TaskModel>> controller;
+    controller = StreamController<List<TaskModel>>(
+      onListen: () async {
+        List<TaskModel> tasks = await _dbClient.getActiveTasks();
+        controller.add(tasks);
+        await _syncData();
+        await controller.close();
+      },
+    );
+    return controller.stream;
   }
 }

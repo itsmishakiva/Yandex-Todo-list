@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:todo_list/data/reposiroty/data_repository.dart';
 import 'package:todo_list/presentation/navigation/navigation_controller.dart';
 
-import '../../../../data/local/db_client.dart';
 import '../../../../domain/task_model.dart';
 
 class DeleteButton extends StatelessWidget {

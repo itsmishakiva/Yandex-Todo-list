@@ -8,7 +8,8 @@ class TaskTextField extends StatelessWidget {
     Key? key,
     required TextEditingController textController,
     required this.task,
-  }) : _textController = textController, super(key: key);
+  })  : _textController = textController,
+        super(key: key);
 
   final TextEditingController _textController;
   final TaskModel? task;
@@ -21,11 +22,22 @@ class TaskTextField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 8),
-          Card(
-            elevation: 2.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                color: Theme.of(context).primaryColor,
+                boxShadow: [
+                  BoxShadow(
+                    offset: const Offset(0, 4),
+                    color: Theme.of(context).shadowColor,
+                    blurRadius: 2.0,
+                  ),
+                  BoxShadow(
+                    offset: const Offset(0, 0),
+                    color: Theme.of(context).primaryColorDark,
+                    blurRadius: 2.0,
+                  ),
+                ]),
             child: TextField(
               controller: _textController,
               maxLines: null,

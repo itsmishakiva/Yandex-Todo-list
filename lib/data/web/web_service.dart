@@ -15,7 +15,6 @@ class WebService {
   );
 
   Future<void> syncData(List<TaskModel> tasks) async {
-    await getTasks();
     List<Map<String, dynamic>> apiTasks = [];
     for (var element in tasks) {
       apiTasks.add(element.toApiMap());
@@ -36,7 +35,7 @@ class WebService {
     Response response = await dio.get('/list');
     List<TaskModel> results = [];
     for (Map<String, dynamic> task in response.data['list']) {
-      results.add(TaskModel.fromMap(task));
+      results.add(TaskModel.fromApiMap(task));
     }
     revision = response.data['revision'];
     return results;
@@ -55,14 +54,19 @@ class WebService {
     revision = response.data['revision'];
   }
 
-  void removeTask(TaskModel task) async {
-    Response response = await dio.delete(
-      '/list/${task.id}',
-      options: Options(headers: {
-        'X-Last-Known-Revision': revision,
-      }, contentType: 'application/json'),
-    );
-    revision = response.data['revision'];
+  Future<bool> removeTask(TaskModel task) async {
+    try {
+      Response response = await dio.delete(
+        '/list/${task.id}',
+        options: Options(headers: {
+          'X-Last-Known-Revision': revision,
+        }, contentType: 'application/json'),
+      );
+      revision = response.data['revision'];
+      return true;
+    } catch(e) {
+      return false;
+    }
   }
 
   void addTask(TaskModel task) async {

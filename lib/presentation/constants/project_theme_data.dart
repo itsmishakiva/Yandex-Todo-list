@@ -6,27 +6,28 @@ class ProjectThemeData {
       scaffoldBackgroundColor: const Color(0xFFF7F6F2),
       disabledColor: const Color(0x26000000),
       shadowColor: Colors.black.withOpacity(0.12),
+      primaryColorDark: Colors.black.withOpacity(0.06),
       primaryColor: Colors.white,
       indicatorColor: Colors.black.withOpacity(0.06),
-      hoverColor: (importanceColor ?? Color(0xFFFF3B30)).withOpacity(0.12),
+      hoverColor: (importanceColor ?? const Color(0xFFFF3B30)).withOpacity(0.12),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           overlayColor: MaterialStateProperty.all(
-            Color(0xFF007AFF).withOpacity(0.1),
+            const Color(0xFF007AFF).withOpacity(0.1),
           ),
         ),
       ),
       colorScheme: ColorScheme(
         brightness: Brightness.light,
-        primary: Color(0xFF007AFF),
+        primary: const Color(0xFF007AFF),
         onPrimary: Colors.white,
-        secondary: Color(0xFF34C759),
-        onSecondary: (importanceColor ?? Color(0xFFFF3B30)).withOpacity(0.12),
-        error: importanceColor ?? Color(0xFFFF3B30),
+        secondary: const Color(0xFF34C759),
+        onSecondary: (importanceColor ?? const Color(0xFFFF3B30)).withOpacity(0.12),
+        error: importanceColor ?? const Color(0xFFFF3B30),
         onError: Colors.white,
         background: Colors.white,
-        onBackground: Color(0x4D000000),
-        surface: Color(0xFF007AFF),
+        onBackground: const Color(0x4D000000),
+        surface: const Color(0xFF007AFF),
         onSurface: Colors.black,
       ),
       iconTheme: const IconThemeData(
@@ -60,7 +61,7 @@ class ProjectThemeData {
         headline4: TextStyle(
           fontSize: 16,
           height: 20 / 16,
-          color: importanceColor ?? Color(0xFFFF3B30),
+          color: importanceColor ?? const Color(0xFFFF3B30),
           fontFamily: 'Roboto',
           fontWeight: FontWeight.w400,
           overflow: TextOverflow.ellipsis,
@@ -68,11 +69,11 @@ class ProjectThemeData {
         headline5: TextStyle(
           fontSize: 14,
           height: 20 / 14,
-          color: importanceColor ?? Color(0xFFFF3B30),
+          color: importanceColor ?? const Color(0xFFFF3B30),
           fontFamily: 'Roboto',
           fontWeight: FontWeight.w400,
         ),
-        headline6: TextStyle(
+        headline6: const TextStyle(
           fontSize: 14,
           height: 20 / 14,
           color: Color(0xFF007AFF),

@@ -25,7 +25,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
   TaskModel? task = TaskModel(
     id: const Uuid().v1(),
     text: '',
-    done: 0,
+    done: false,
   );
 
   @override
@@ -86,6 +86,16 @@ class _EditTaskPageState extends State<EditTaskPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: PopupMenuButton<String>(
+                    position: PopupMenuPosition.over,
+                    offset: Offset(
+                      8,
+                      importanceValue == AppLocalizations.of(context)!.no
+                          ? 0
+                          : (importanceValue ==
+                                  AppLocalizations.of(context)!.low
+                              ? 48
+                              : 96),
+                    ),
                     tooltip: '',
                     itemBuilder: (context) {
                       return [
@@ -108,12 +118,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                     value,
                                     style: value ==
                                             AppLocalizations.of(context)!.high
-                                        ? Theme.of(context)
-                                            .textTheme
-                                            .headline5
-                                        : Theme.of(context)
-                                            .textTheme
-                                            .subtitle1,
+                                        ? Theme.of(context).textTheme.headline5
+                                        : Theme.of(context).textTheme.subtitle1,
                                   ),
                                 ),
                               ),
@@ -121,12 +127,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
                           )
                           .toList();
                     },
-                    offset: const Offset(8, 0),
                     onSelected: (value) {
                       if (value == AppLocalizations.of(context)!.low) {
                         task!.importance = 'low';
-                      } else if (value ==
-                          AppLocalizations.of(context)!.high) {
+                      } else if (value == AppLocalizations.of(context)!.high) {
                         task!.importance = 'important';
                       } else {
                         task!.importance = 'basic';
@@ -199,8 +203,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         SizedBox(
                           height: 20,
                           child: Switch(
-                            activeColor:
-                                Theme.of(context).colorScheme.primary,
+                            activeColor: Theme.of(context).colorScheme.primary,
                             value: task!.deadline != null,
                             onChanged: (value) async {
                               if (value == false) {
@@ -218,9 +221,8 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                 lastDate: DateTime(2070),
                               ))
                                   ?.millisecondsSinceEpoch;
-                              task!.deadline = chosenDate == null
-                                  ? null
-                                  : chosenDate ~/ 100;
+                              task!.deadline =
+                                  chosenDate == null ? null : chosenDate ~/ 100;
                               setState(() {});
                             },
                           ),

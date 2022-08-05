@@ -10,7 +10,7 @@ class DBClient {
 
   static Future<void> openDataBase() async {
     database = openDatabase(
-      join(await getDatabasesPath(), 'todo.db'),
+      join(await getDatabasesPath(), 'todo_db.db'),
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE tasks('
@@ -22,7 +22,7 @@ class DBClient {
           ' created_at INTEGER,'
           ' deadline INTEGER,'
           ' last_updated_by TEXT,'
-          ' color INTEGER )',
+          ' is_deleted INTEGER )',
         );
       },
       version: 1,
@@ -58,19 +58,27 @@ class DBClient {
     );
   }
 
-  Future<List<TaskModel>> getAllTasks() async {
+  Future<List<TaskModel>> getRemovedTasks() async {
     Database db = await database;
     final List<Map<String, dynamic>> maps = await db.query('tasks');
-    return List.generate(maps.length, (i) {
-      return TaskModel(
-        id: maps[i]['id'],
-        createdAt: maps[i]['created_at'],
-        done: maps[i]['done'],
-        deadline: maps[i]['deadline'],
-        updatedAt: maps[i]['changed_at'],
-        text: maps[i]['text'],
-        importance: maps[i]['importance'],
-      );
-    });
+    List<TaskModel> tasks = [];
+    for (int i = 0; i < maps.length; i++) {
+      if (maps[i]['is_deleted'] == 1) {
+        tasks.add(TaskModel.fromMap(maps[i]));
+      }
+    }
+    return tasks;
+  }
+
+  Future<List<TaskModel>> getActiveTasks() async {
+    Database db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('tasks');
+    List<TaskModel> tasks = [];
+    for (int i = 0; i < maps.length; i++) {
+      if (maps[i]['is_deleted'] != 1) {
+        tasks.add(TaskModel.fromMap(maps[i]));
+      }
+    }
+    return tasks;
   }
 }

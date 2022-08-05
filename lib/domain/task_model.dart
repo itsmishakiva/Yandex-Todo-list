@@ -6,11 +6,12 @@ class TaskModel {
   late String id;
   late String text;
   int? createdAt;
-  int? done;
+  late bool done;
   int? deadline;
   int? updatedAt;
   String? importance;
   static late String deviceId;
+  late bool isDeleted;
 
   static Future<void> getId() async {
     var deviceInfo = DeviceInfoPlugin();
@@ -27,20 +28,34 @@ class TaskModel {
     required this.id,
     required this.text,
     this.createdAt,
-    this.done = 0,
+    this.done = false,
     this.deadline,
     this.updatedAt,
     this.importance = 'basic',
+    this.isDeleted = false,
   });
 
-  TaskModel.fromMap(Map<String, dynamic> map) {
+  TaskModel.fromApiMap(Map<String, dynamic> map) {
     id = map['id'] as String;
     text = map['text'] as String;
     importance = map['importance'];
     deadline = map['deadline'];
-    done = map['done'] ? 1 : 0;
+    done = map['done'];
     createdAt = map['created_at'];
     updatedAt = map['changed_at'];
+    isDeleted = false;
+  }
+
+  TaskModel.fromMap(Map<String, dynamic> map) {
+    id = map['id'];
+    createdAt = map['created_at'];
+    done = map['done'] == 1;
+    deadline = map['deadline'];
+    updatedAt = map['changed_at'];
+    text = map['text'];
+    importance = map['importance'];
+    deviceId = map['last_updated_by'];
+    isDeleted = map['is_deleted'] == 1;
   }
 
   Map<String, dynamic> toMap() {
@@ -48,11 +63,12 @@ class TaskModel {
       'id': id,
       'text': text,
       'created_at': createdAt,
-      'done': done,
+      'done': done ? 1 : 0,
       'deadline': deadline,
       'changed_at': updatedAt,
       'importance': importance,
-      'last_updated_by': deviceId
+      'last_updated_by': deviceId,
+      'is_deleted' : isDeleted ? 1 : 0
     };
   }
 
@@ -61,7 +77,7 @@ class TaskModel {
       'id': id,
       'text': text,
       'created_at': createdAt,
-      'done': done == 0 ? false : true,
+      'done': done,
       'deadline': deadline,
       'changed_at': updatedAt,
       'importance': importance,

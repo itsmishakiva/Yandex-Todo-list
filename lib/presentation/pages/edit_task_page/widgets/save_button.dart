@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/data/local/db_client.dart';
 import 'package:todo_list/data/reposiroty/data_repository.dart';
 import 'package:todo_list/domain/task_model.dart';
 
@@ -43,7 +42,7 @@ class SaveButton extends StatelessWidget {
               builder: (context) {
                 return Center(
                   child: Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Container(
                       height: 100,
                       decoration: BoxDecoration(
