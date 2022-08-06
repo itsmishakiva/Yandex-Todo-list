@@ -45,8 +45,8 @@ class _TasksPageState extends State<TasksPage> {
       child: Scaffold(
         body: Consumer<DataRepository>(
           builder: (context, data, child) {
-            return FutureBuilder<List<TaskModel>>(
-              future: data.getAllTasks(),
+            return StreamBuilder<List<TaskModel>>(
+              stream: data.getAllTasksStream(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(

@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:todo_list/data/local/db_client.dart';
 import 'package:todo_list/data/web/web_service.dart';
 
@@ -77,12 +79,28 @@ class DataRepository with ChangeNotifier {
     await _webService.syncData(await _dbClient.getActiveTasks());
   }
 
-  Future<List<TaskModel>> getAllTasks() async {
-    try {
-      if (!synced) await _syncData();
-    } catch (e) {
-
-    }
-    return _dbClient.getActiveTasks();
+  Stream<List<TaskModel>> getAllTasksStream() {
+    final Stream<List<TaskModel>> tasks = (() {
+      late final StreamController<List<TaskModel>> controller;
+      controller = StreamController<List<TaskModel>>(
+        onListen: () async {
+          List<TaskModel> tasks = await _dbClient.getActiveTasks();
+          controller.add(tasks);
+          if (!synced) {
+            try {
+              await _syncData();
+            } catch(e) {
+              if (kDebugMode) {
+                Logger log = Logger('data_logger');
+                log.fine(e);
+              }
+            }
+          }
+          await controller.close();
+        },
+      );
+      return controller.stream;
+    })();
+    return tasks;
   }
 }
