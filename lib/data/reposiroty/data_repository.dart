@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_list/data/local/db_client.dart';
 import 'package:todo_list/data/web/web_service.dart';
@@ -9,16 +11,31 @@ import '../../domain/task_model.dart';
 class DataRepository with ChangeNotifier {
   final DBClient _dbClient;
   final WebService _webService;
+  bool synced = false;
 
   DataRepository(this._dbClient, this._webService);
 
+  Future<String> getId() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) {
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor ?? '';
+    } else if (Platform.isAndroid) {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.androidId ?? '';
+    }
+    return 'Strange device with no id';
+  }
+
   void insertTask(TaskModel task) async {
+    task.deviceId = await getId();
     await _dbClient.insertTask(task);
     notifyListeners();
     _webService.addTask(task);
   }
 
   void updateTask(TaskModel task) async {
+    task.deviceId = await getId();
     await _dbClient.updateTask(task);
     notifyListeners();
     _webService.updateTask(task);
@@ -34,6 +51,7 @@ class DataRepository with ChangeNotifier {
   }
 
   Future<void> _syncData() async {
+    synced = true;
     await _webService.getTasks();
     for (TaskModel task in await _dbClient.getRemovedTasks()) {
       bool removed = await _webService.removeTask(task);
@@ -42,7 +60,6 @@ class DataRepository with ChangeNotifier {
       }
     }
     List<TaskModel> activeTasks = await _dbClient.getActiveTasks();
-    await _webService.syncData(activeTasks);
     for (TaskModel webTask in await _webService.getTasks()) {
       bool found = false;
       for (TaskModel dbTask in activeTasks) {
@@ -57,18 +74,15 @@ class DataRepository with ChangeNotifier {
         await _dbClient.insertTask(webTask);
       }
     }
+    await _webService.syncData(await _dbClient.getActiveTasks());
   }
 
-  Stream<List<TaskModel>> getAllTasksStream() {
-    late final StreamController<List<TaskModel>> controller;
-    controller = StreamController<List<TaskModel>>(
-      onListen: () async {
-        List<TaskModel> tasks = await _dbClient.getActiveTasks();
-        controller.add(tasks);
-        await _syncData();
-        await controller.close();
-      },
-    );
-    return controller.stream;
+  Future<List<TaskModel>> getAllTasks() async {
+    try {
+      if (!synced) await _syncData();
+    } catch (e) {
+
+    }
+    return _dbClient.getActiveTasks();
   }
 }

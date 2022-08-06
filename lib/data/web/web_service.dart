@@ -5,7 +5,14 @@ import 'package:dio/dio.dart';
 import '../../domain/task_model.dart';
 
 class WebService {
-  late int revision;
+  int? revision;
+
+  Future<void> getRevision() async {
+    if (revision == null) {
+      await getTasks();
+    }
+    return;
+  }
 
   Dio dio = Dio(
     BaseOptions(
@@ -15,6 +22,7 @@ class WebService {
   );
 
   Future<void> syncData(List<TaskModel> tasks) async {
+    getRevision();
     List<Map<String, dynamic>> apiTasks = [];
     for (var element in tasks) {
       apiTasks.add(element.toApiMap());
@@ -42,6 +50,7 @@ class WebService {
   }
 
   void updateTask(TaskModel task) async {
+    getRevision();
     Response response = await dio.put(
       '/list/${task.id}',
       options: Options(headers: {
@@ -55,6 +64,7 @@ class WebService {
   }
 
   Future<bool> removeTask(TaskModel task) async {
+    getRevision();
     try {
       Response response = await dio.delete(
         '/list/${task.id}',
@@ -70,6 +80,7 @@ class WebService {
   }
 
   void addTask(TaskModel task) async {
+    getRevision();
     Response response = await dio.post(
       '/list',
       options: Options(headers: {

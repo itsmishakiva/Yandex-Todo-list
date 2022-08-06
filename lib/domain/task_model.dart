@@ -1,7 +1,3 @@
-import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
-
 class TaskModel {
   late String id;
   late String text;
@@ -10,19 +6,8 @@ class TaskModel {
   int? deadline;
   int? updatedAt;
   String? importance;
-  static late String deviceId;
+  String? deviceId;
   late bool isDeleted;
-
-  static Future<void> getId() async {
-    var deviceInfo = DeviceInfoPlugin();
-    if (Platform.isIOS) {
-      var iosDeviceInfo = await deviceInfo.iosInfo;
-      deviceId = iosDeviceInfo.identifierForVendor ?? '';
-    } else if (Platform.isAndroid) {
-      var androidDeviceInfo = await deviceInfo.androidInfo;
-      deviceId = androidDeviceInfo.androidId ?? '';
-    }
-  }
 
   TaskModel({
     required this.id,

@@ -27,7 +27,7 @@ class SaveButton extends StatelessWidget {
         onPressed: () {
           task!.updatedAt =
               DateTime.now().millisecondsSinceEpoch ~/ 100;
-          if (task!.text.isNotEmpty) {
+          if (task!.text.isNotEmpty && task!.text.trim().isNotEmpty) {
             if (task!.createdAt == null) {
               task!.createdAt =
                   DateTime.now().millisecondsSinceEpoch ~/ 100;
