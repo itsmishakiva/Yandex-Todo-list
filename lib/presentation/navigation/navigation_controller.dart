@@ -13,8 +13,8 @@ class NavigationController {
     _key.currentState?.pushNamed('/edit_tasks', arguments: arguments);
   }
 
-  void pop() {
-    return _key.currentState?.pop();
+  void pop([dynamic result]) {
+    return _key.currentState?.pop(result);
   }
 
 }

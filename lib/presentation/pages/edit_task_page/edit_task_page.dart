@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/presentation/navigation/navigation_controller.dart';
+import 'package:todo_list/presentation/pages/edit_task_page/widgets/calendar_dialog.dart';
 import 'package:todo_list/presentation/pages/edit_task_page/widgets/delete_button.dart';
 import 'package:todo_list/presentation/pages/edit_task_page/widgets/save_button.dart';
 import 'package:todo_list/presentation/pages/edit_task_page/widgets/task_text_field.dart';
@@ -211,18 +212,14 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                 setState(() {});
                                 return;
                               }
-                              int? chosenDate = (await showDatePicker(
+                              int? chosenDate = (await showDialog<DateTime?>(
                                 context: context,
-                                initialDate: task!.deadline == null
-                                    ? DateTime.now()
-                                    : DateTime.fromMillisecondsSinceEpoch(
-                                        task!.deadline! * 100),
-                                firstDate: DateTime(1970),
-                                lastDate: DateTime(2070),
-                              ))
-                                  ?.millisecondsSinceEpoch;
+                                builder: (context) {
+                                  return CalendarDialog(task: task!);
+                                },
+                              ))?.millisecondsSinceEpoch;
                               task!.deadline =
-                                  chosenDate == null ? null : chosenDate ~/ 100;
+                              chosenDate == null ? null : chosenDate ~/ 100;
                               setState(() {});
                             },
                           ),

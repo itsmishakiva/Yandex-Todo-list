@@ -28,7 +28,7 @@ class ProjectThemeData {
         background: Colors.white,
         onBackground: const Color(0x4D000000),
         surface: const Color(0xFF007AFF),
-        onSurface: Colors.black,
+        onSurface: Colors.black.withOpacity(0.6),
       ),
       iconTheme: const IconThemeData(
         color: Color(0xFF007AFF),
@@ -119,6 +119,20 @@ class ProjectThemeData {
           fontFamily: 'Roboto',
           fontWeight: FontWeight.w400,
           overflow: TextOverflow.ellipsis,
+        ),
+        caption: const TextStyle(
+          fontSize: 12,
+          height: 20 / 12,
+          color: Colors.black,
+          fontFamily: 'Roboto',
+          fontWeight: FontWeight.w400,
+        ),
+        overline: const TextStyle(
+          fontSize: 34,
+          height: 40 / 34,
+          color: Colors.white,
+          fontFamily: 'Roboto',
+          fontWeight: FontWeight.w500,
         ),
       ),
     );

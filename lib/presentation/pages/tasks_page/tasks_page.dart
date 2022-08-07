@@ -137,74 +137,75 @@ class _TasksPageState extends State<TasksPage> {
                                   ),
                               ],
                             ),
-                            child: index == snapshot.data!.length
-                                ? Material(
-                                    color: Theme.of(context).primaryColor,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(bottom: 8.0),
-                                      child: InkWell(
-                                        onTap: () {
-                                          editTask();
-                                        },
-                                        child: SizedBox(
-                                          height: 48,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 14.0,
-                                              right: 16.0,
-                                              left: 52.0,
-                                            ),
-                                            child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .newTask,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle2,
+                            child: Column(
+                              children: [
+                                if (index == 0)
+                                  Container(
+                                    height: 8,
+                                    color:
+                                    Theme.of(context).primaryColor,
+                                  ),
+                                index == snapshot.data!.length
+                                    ? Material(
+                                        color: Theme.of(context).primaryColor,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(bottom: 8.0),
+                                          child: InkWell(
+                                            onTap: () {
+                                              editTask();
+                                            },
+                                            child: SizedBox(
+                                              height: 48,
+                                              width: double.infinity,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                  top: 14.0,
+                                                  right: 16.0,
+                                                  left: 52.0,
+                                                ),
+                                                child: Text(
+                                                  AppLocalizations.of(context)!
+                                                      .newTask,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle2,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  )
-                                : !snapshot.data![index].done || showDoneTasks
-                                    ? Column(
-                                        children: [
-                                          if (index == 0)
-                                            Container(
-                                              height: 8,
-                                              color:
-                                                  Theme.of(context).primaryColor,
-                                            ),
-                                          DismissibleTask(
-                                            shadows: [
-                                              if (index != 0)
-                                              BoxShadow(
-                                                offset: const Offset(0, 0),
-                                                color: Theme.of(context).primaryColorDark,
-                                                blurRadius: 2.0,
-                                              ),
-                                            ],
-                                            task: snapshot.data![index],
-                                            onDelete: () async {
-                                              var task = snapshot.data![index];
-                                              snapshot.data!.removeAt(index);
-                                              data.removeTask(task);
-                                            },
-                                            onMarkedDone: () async {
-                                              snapshot.data![index].done = true;
-                                              data.updateTask(
-                                                  snapshot.data![index]);
-                                            },
-                                            onCheckBoxChanged: (value) async {
-                                              snapshot.data![index].done =
-                                                  !snapshot.data![index].done;
-                                              data.updateTask(
-                                                  snapshot.data![index]);
-                                            },
-                                          ),
-                                        ],
                                       )
-                                    : const SizedBox(),
+                                    : !snapshot.data![index].done || showDoneTasks
+                                        ? DismissibleTask(
+                                          shadows: [
+                                            if (index != 0)
+                                            BoxShadow(
+                                              offset: const Offset(0, 0),
+                                              color: Theme.of(context).primaryColorDark,
+                                              blurRadius: 2.0,
+                                            ),
+                                          ],
+                                          task: snapshot.data![index],
+                                          onDelete: () async {
+                                            var task = snapshot.data![index];
+                                            snapshot.data!.removeAt(index);
+                                            data.removeTask(task);
+                                          },
+                                          onMarkedDone: () async {
+                                            snapshot.data![index].done = true;
+                                            data.updateTask(
+                                                snapshot.data![index]);
+                                          },
+                                          onCheckBoxChanged: (value) async {
+                                            snapshot.data![index].done =
+                                                !snapshot.data![index].done;
+                                            data.updateTask(
+                                                snapshot.data![index]);
+                                          },
+                                        )
+                                        : const SizedBox(),
+                              ],
+                            ),
                           );
                         },
                         childCount: snapshot.data!.length + 1,

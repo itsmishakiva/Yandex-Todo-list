@@ -54,7 +54,7 @@ class CustomFlexibleSpace extends StatelessWidget {
                   Opacity(
                     opacity: currentValue * 0.3,
                     child: Text(
-                      '${AppLocalizations.of(context)!.done} — $doneTasksCount',
+                      '${AppLocalizations.of(context)!.done_task} — $doneTasksCount',
                       style: Theme.of(context).textTheme.bodyText1?.copyWith(
                         fontSize: 16 * currentValue,
                       ),
