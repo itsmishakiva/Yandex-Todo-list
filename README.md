@@ -1,6 +1,6 @@
 # ПРИЛОЖЕНИЕ TODO LIST
 
-#### Ссылка на загрузку (Android):
+#### Ссылка на загрузку (Android): https://disk.yandex.com/d/remmjBVXTUSjoA
 
 ## UI:
 #### Экран "Мои дела"
