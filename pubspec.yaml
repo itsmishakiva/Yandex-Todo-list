@@ -41,6 +41,8 @@ dependencies:
   device_info_plus:
   logging:
   table_calendar:
+  flutter_bloc: ^8.1.1
+  freezed: ^2.1.0+1
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -47,6 +47,7 @@ class TaskTextField extends StatelessWidget {
               },
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context)!.needToDo,
+                hintStyle: Theme.of(context).textTheme.subtitle2,
                 isDense: true,
                 filled: true,
                 fillColor: Theme.of(context).primaryColor,

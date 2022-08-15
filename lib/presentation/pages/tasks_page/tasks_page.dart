@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
@@ -67,11 +68,19 @@ class _TasksPageState extends State<TasksPage> {
                       floating: true,
                       elevation: 4,
                       expandedHeight: 138,
-                      backgroundColor: const Color(0xFFF7F6F2),
-                      systemOverlayStyle: const SystemUiOverlayStyle(
+                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                      systemOverlayStyle: SystemUiOverlayStyle(
                         statusBarColor: Colors.transparent,
-                        statusBarIconBrightness: Brightness.dark,
-                        statusBarBrightness: Brightness.light,
+                        statusBarIconBrightness: SchedulerBinding
+                            .instance.window.platformBrightness ==
+                            Brightness.light
+                            ? Brightness.dark
+                            : Brightness.light,
+                        statusBarBrightness: SchedulerBinding
+                            .instance.window.platformBrightness ==
+                            Brightness.light
+                            ? Brightness.light
+                            : Brightness.dark,
                       ),
                       flexibleSpace: CustomFlexibleSpace(
                         doneTasksCount: getDoneCount(snapshot.data!),

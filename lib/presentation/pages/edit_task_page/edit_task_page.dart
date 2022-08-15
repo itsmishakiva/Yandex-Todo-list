@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -57,186 +58,203 @@ class _EditTaskPageState extends State<EditTaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            leading: IconButton(
-              onPressed: () {
-                context.read<NavigationController>().pop();
-              },
-              splashRadius: 20,
-              icon: SvgPicture.asset(
-                'assets/close.svg',
-                width: 24,
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: SchedulerBinding
+            .instance.window.platformBrightness ==
+            Brightness.light
+            ? Brightness.dark
+            : Brightness.light,
+        statusBarBrightness: SchedulerBinding
+            .instance.window.platformBrightness ==
+            Brightness.light
+            ? Brightness.light
+            : Brightness.dark,
+      ),
+        child: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                pinned: true,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                leading: IconButton(
+                  onPressed: () {
+                    context.read<NavigationController>().pop();
+                  },
+                  splashRadius: 20,
+                  icon: SvgPicture.asset(
+                    'assets/close.svg',
+                    width: 24,
+                    color: Theme.of(context).textTheme.headline1!.color,
+                  ),
+                ),
+                actions: [
+                  SaveButton(task: task),
+                ],
               ),
-            ),
-            actions: [SaveButton(task: task)],
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-              statusBarIconBrightness: Brightness.dark,
-              statusBarBrightness: Brightness.light,
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TaskTextField(textController: _textController, task: task),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: PopupMenuButton<String>(
-                    position: PopupMenuPosition.over,
-                    offset: Offset(
-                      8,
-                      importanceValue == AppLocalizations.of(context)!.no
-                          ? 0
-                          : (importanceValue ==
-                                  AppLocalizations.of(context)!.low
-                              ? 48
-                              : 96),
-                    ),
-                    tooltip: '',
-                    itemBuilder: (context) {
-                      return [
-                        AppLocalizations.of(context)!.no,
-                        AppLocalizations.of(context)!.low,
-                        AppLocalizations.of(context)!.high,
-                      ]
-                          .map(
-                            (value) => PopupMenuItem<String>(
-                              value: value,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0,
-                              ),
-                              child: SizedBox(
-                                width: 132,
-                                height: 48,
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    value,
-                                    style: value ==
-                                            AppLocalizations.of(context)!.high
-                                        ? Theme.of(context).textTheme.headline5
-                                        : Theme.of(context).textTheme.subtitle1,
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TaskTextField(textController: _textController, task: task),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: PopupMenuButton<String>(
+                        color: Theme.of(context).primaryColor,
+                        position: PopupMenuPosition.over,
+                        offset: Offset(
+                          8,
+                          importanceValue == AppLocalizations.of(context)!.no
+                              ? 0
+                              : (importanceValue ==
+                                      AppLocalizations.of(context)!.low
+                                  ? 48
+                                  : 96),
+                        ),
+                        tooltip: '',
+                        itemBuilder: (context) {
+                          return [
+                            AppLocalizations.of(context)!.no,
+                            AppLocalizations.of(context)!.low,
+                            AppLocalizations.of(context)!.high,
+                          ]
+                              .map(
+                                (value) => PopupMenuItem<String>(
+                                  value: value,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0,
+                                  ),
+                                  child: SizedBox(
+                                    width: 132,
+                                    height: 48,
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        value,
+                                        style: value ==
+                                                AppLocalizations.of(context)!.high
+                                            ? Theme.of(context).textTheme.headline5
+                                            : Theme.of(context).textTheme.subtitle1,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
-                          .toList();
-                    },
-                    onSelected: (value) {
-                      if (value == AppLocalizations.of(context)!.low) {
-                        task!.importance = 'low';
-                      } else if (value == AppLocalizations.of(context)!.high) {
-                        task!.importance = 'important';
-                      } else {
-                        task!.importance = 'basic';
-                      }
-                      setState(() {
-                        importanceValue = value;
-                      });
-                    },
-                    initialValue: importanceValue,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(
-                          8.0,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.importance,
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            Text(
-                              importanceValue,
-                              style: importanceValue ==
-                                      AppLocalizations.of(context)!.high
-                                  ? Theme.of(context).textTheme.headline5
-                                  : Theme.of(context).textTheme.headline3,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Divider(
-                    height: 32,
-                  ),
-                ),
-                SizedBox(
-                  height: 56,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.do_until,
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                            const SizedBox(height: 4),
-                            if (task!.deadline != null)
-                              DateText(
-                                dateTime: DateTime.fromMillisecondsSinceEpoch(
-                                  100 * task!.deadline!,
-                                ),
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                          ],
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          height: 20,
-                          child: Switch(
-                            activeColor: Theme.of(context).colorScheme.primary,
-                            value: task!.deadline != null,
-                            onChanged: (value) async {
-                              if (value == false) {
-                                task!.deadline = null;
-                                setState(() {});
-                                return;
-                              }
-                              int? chosenDate = (await showDialog<DateTime?>(
-                                context: context,
-                                builder: (context) {
-                                  return CalendarDialog(task: task!);
-                                },
-                              ))?.millisecondsSinceEpoch;
-                              task!.deadline =
-                              chosenDate == null ? null : chosenDate ~/ 100;
-                              setState(() {});
-                            },
+                              )
+                              .toList();
+                        },
+                        onSelected: (value) {
+                          if (value == AppLocalizations.of(context)!.low) {
+                            task!.importance = 'low';
+                          } else if (value == AppLocalizations.of(context)!.high) {
+                            task!.importance = 'important';
+                          } else {
+                            task!.importance = 'basic';
+                          }
+                          setState(() {
+                            importanceValue = value;
+                          });
+                        },
+                        initialValue: importanceValue,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
-                        )
-                      ],
+                          child: Padding(
+                            padding: const EdgeInsets.all(
+                              8.0,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.importance,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                Text(
+                                  importanceValue,
+                                  style: importanceValue ==
+                                          AppLocalizations.of(context)!.high
+                                      ? Theme.of(context).textTheme.headline5
+                                      : Theme.of(context).textTheme.headline3,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Divider(
+                        height: 32,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 56,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.do_until,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                const SizedBox(height: 4),
+                                if (task!.deadline != null)
+                                  DateText(
+                                    dateTime: DateTime.fromMillisecondsSinceEpoch(
+                                      100 * task!.deadline!,
+                                    ),
+                                    style: Theme.of(context).textTheme.headline6,
+                                  ),
+                              ],
+                            ),
+                            const Spacer(),
+                            SizedBox(
+                              height: 20,
+                              child: Switch(
+                                activeColor: Theme.of(context).colorScheme.primary,
+                                value: task!.deadline != null,
+                                onChanged: (value) async {
+                                  if (value == false) {
+                                    task!.deadline = null;
+                                    setState(() {});
+                                    return;
+                                  }
+                                  int? chosenDate = (await showDialog<DateTime?>(
+                                    context: context,
+                                    builder: (context) {
+                                      return CalendarDialog(task: task!);
+                                    },
+                                  ))
+                                      ?.millisecondsSinceEpoch;
+                                  task!.deadline =
+                                      chosenDate == null ? null : chosenDate ~/ 100;
+                                  setState(() {});
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    const Divider(
+                      height: 16,
+                    ),
+                    DeleteButton(task: task),
+                  ],
                 ),
-                const SizedBox(height: 24),
-                const Divider(
-                  height: 16,
-                ),
-                DeleteButton(task: task),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
