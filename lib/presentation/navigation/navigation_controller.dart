@@ -9,7 +9,7 @@ class NavigationController {
     _key.currentState?.pushNamed(routeName, arguments: arguments);
   }
 
-  void navigateToTasksPage({Object? arguments}) {
+  void navigateToEditPage({Object? arguments}) {
     _key.currentState?.pushNamed('/edit_tasks', arguments: arguments);
   }
 

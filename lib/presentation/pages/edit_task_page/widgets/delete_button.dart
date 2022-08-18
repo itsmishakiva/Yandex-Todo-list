@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_list/data/reposiroty/data_repository.dart';
-import 'package:todo_list/presentation/navigation/navigation_controller.dart';
+import 'package:todo_list/main.dart';
+import 'package:todo_list/presentation/pages/tasks_page/tasks_page_controller.dart';
 
+import '../../../../data/reposiroty/data_repository.dart';
 import '../../../../domain/task_model.dart';
+import '../edit_task_controller.dart';
 
-class DeleteButton extends StatelessWidget {
+class DeleteButton extends ConsumerWidget {
   const DeleteButton({
     Key? key,
     required this.task,
@@ -16,7 +18,7 @@ class DeleteButton extends StatelessWidget {
   final TaskModel? task;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0),
       child: SizedBox(
@@ -34,8 +36,9 @@ class DeleteButton extends StatelessWidget {
           ),
           onPressed: () {
             if (task!.createdAt != null) {
-              context.read<DataRepository>().removeTask(task!);
-              context.read<NavigationController>().pop();
+              ref.read(dataProvider).removeTask(task!);
+              ref.read(editPageProvider.notifier).clearData();
+              ref.read(navigationProvider).pop();
             }
           },
           child: Opacity(

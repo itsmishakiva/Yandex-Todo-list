@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo_list/data/reposiroty/data_repository.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_list/domain/task_model.dart';
+import 'package:todo_list/main.dart';
 
-import '../../../navigation/navigation_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SaveButton extends StatelessWidget {
+import '../../../../data/reposiroty/data_repository.dart';
+import '../edit_task_controller.dart';
+
+class SaveButton extends ConsumerWidget {
   const SaveButton({
     Key? key,
     required this.task,
@@ -15,7 +17,7 @@ class SaveButton extends StatelessWidget {
   final TaskModel? task;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextButton(
@@ -31,11 +33,12 @@ class SaveButton extends StatelessWidget {
             if (task!.createdAt == null) {
               task!.createdAt =
                   DateTime.now().millisecondsSinceEpoch ~/ 100;
-              context.read<DataRepository>().insertTask(task!);
+              ref.read(dataProvider).insertTask(task!);
             } else {
-              context.read<DataRepository>().updateTask(task!);
+              ref.read(dataProvider).updateTask(task!);
             }
-            context.read<NavigationController>().pop();
+            ref.read(editPageProvider.notifier).clearData();
+            ref.read(navigationProvider).pop();
           } else {
             showDialog(
               context: context,

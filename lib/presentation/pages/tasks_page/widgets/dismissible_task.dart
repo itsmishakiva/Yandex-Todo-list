@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
+import 'package:todo_list/main.dart';
 import 'package:todo_list/presentation/navigation/navigation_controller.dart';
 
 import '../../../../domain/task_model.dart';
@@ -195,18 +196,23 @@ class _DismissibleTaskState extends State<DismissibleTask>
                   ),
                 ),
                 const SizedBox(width: 12),
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  splashRadius: 20.0,
-                  iconSize: 24.0,
-                  icon: Icon(
-                    Icons.info_outline,
-                    color: Theme.of(context).primaryIconTheme.color,
-                  ),
-                  onPressed: () {
-                    context.read<NavigationController>().navigateToTasksPage(arguments: widget.task);
+                Consumer(
+                  builder: (context, ref, child) {
+                    return IconButton(
+                      padding: EdgeInsets.zero,
+                      splashRadius: 20.0,
+                      iconSize: 24.0,
+                      icon: Icon(
+                        Icons.info_outline,
+                        color: Theme.of(context).primaryIconTheme.color,
+                      ),
+                      onPressed: () {
+                        print(widget.task);
+                        ref.read(navigationProvider).navigateToEditPage(arguments: TaskModel.copy(task: widget.task));
+                      },
+                      constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+                    );
                   },
-                  constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
                 ),
               ],
             ),

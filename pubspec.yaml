@@ -31,7 +31,6 @@ dependencies:
     sdk: flutter
   sqflite:
   path:
-  provider:
   flutter_localizations:
     sdk: flutter
   intl:
@@ -43,6 +42,7 @@ dependencies:
   table_calendar:
   flutter_bloc: ^8.1.1
   freezed: ^2.1.0+1
+  flutter_riverpod: ^1.0.4
 
 
   # The following adds the Cupertino Icons font to your application.

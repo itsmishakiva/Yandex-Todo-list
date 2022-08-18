@@ -1,10 +1,13 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../domain/task_model.dart';
 
 class DBClient {
-  DBClient();
+  final Ref ref;
+
+  DBClient(this.ref);
 
   static late Future<Database> database;
 

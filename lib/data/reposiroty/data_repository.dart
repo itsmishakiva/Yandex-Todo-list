@@ -4,18 +4,30 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:todo_list/data/local/db_client.dart';
 import 'package:todo_list/data/web/web_service.dart';
 
 import '../../domain/task_model.dart';
 
+ChangeNotifierProvider<DataRepository> dataProvider = ChangeNotifierProvider<
+    DataRepository>(
+      (ref) =>
+      DataRepository(
+        DBClient(ref),
+        WebService(ref),
+        ref
+      ),
+);
+
 class DataRepository with ChangeNotifier {
   final DBClient _dbClient;
   final WebService _webService;
+  final Ref ref;
   bool synced = false;
 
-  DataRepository(this._dbClient, this._webService);
+  DataRepository(this._dbClient, this._webService, this.ref);
 
   Future<String> getId() async {
     var deviceInfo = DeviceInfoPlugin();
