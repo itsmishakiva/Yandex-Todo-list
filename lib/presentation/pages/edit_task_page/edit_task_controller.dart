@@ -30,18 +30,15 @@ class EditTaskController extends StateNotifier<EditTaskPageState> {
       required String basic,
       required String low}) {
     if (task != state.task) {
-      print(task.importance);
       String importanceValue = basic;
       switch (task.importance) {
         case 'important':
           {
-            print('imp');
             importanceValue = important;
             break;
           }
         case 'low':
           {
-            print('ggg');
             importanceValue = low;
             break;
           }
@@ -80,6 +77,5 @@ class EditTaskController extends StateNotifier<EditTaskPageState> {
       ),
       importanceValue: null,
     );
-    print('clear');
   }
 }

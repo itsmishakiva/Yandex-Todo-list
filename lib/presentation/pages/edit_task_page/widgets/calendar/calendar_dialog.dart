@@ -219,7 +219,7 @@ class CalendarDialog extends ConsumerWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton(
                     onPressed: () {
-                      ref.read(navigationProvider).pop();
+                      Navigator.of(context).pop();
                       controller.clearDate();
                     },
                     child: const Text('ОТМЕНА'),
@@ -229,7 +229,7 @@ class CalendarDialog extends ConsumerWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton(
                     onPressed: () {
-                      ref.read(navigationProvider).pop(state);
+                      Navigator.of(context).pop(state);
                       controller.clearDate();
                     },
                     child: const Text('ГОТОВО'),

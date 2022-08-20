@@ -1,20 +1,28 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_list/main.dart';
+
+import '../../domain/task_model.dart';
 
 class NavigationController {
   final GlobalKey<NavigatorState> _key = GlobalKey();
 
   GlobalKey<NavigatorState> get key => _key;
 
-  void navigateTo (String routeName, {Object? arguments}) {
-    _key.currentState?.pushNamed(routeName, arguments: arguments);
+  NavigationController(this.ref);
+
+  Ref ref;
+
+  void navigateToEditPage({TaskModel? task}) {
+    ref.read(navigationProvider1).handleTaskTapped(task?.id);
   }
 
-  void navigateToEditPage({Object? arguments}) {
-    _key.currentState?.pushNamed('/edit_tasks', arguments: arguments);
+  void closeDialog() {
+
   }
 
-  void pop([dynamic result]) {
-    return _key.currentState?.pop(result);
+  void pop() {
+    ref.read(navigationProvider1).goToHome();
   }
 
 }

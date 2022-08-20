@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_list/data/reposiroty/data_repository.dart';
 import 'package:todo_list/main.dart';
 
 import '../../domain/task_model.dart';
@@ -44,7 +43,7 @@ class WebService {
         data: jsonEncode({'list': apiTasks}),
       );
       revision = response.data['revision'];
-    } catch(e) {
+    } catch (e) {
       ref.read(loggerProvider).fine('ERROR SYNCING WEB $e');
     }
   }
@@ -88,18 +87,22 @@ class WebService {
     try {
       Response response = await dio.delete(
         '/list/${task.id}',
-        options: Options(validateStatus: (status) {
-          if (status == null) return false;
-          if (status >= 200 && status < 300){
-            return true;
-          }
-          if (status == 404) {
-            result = true;
-          }
-          return false;
-        },headers: {
-          'X-Last-Known-Revision': revision,
-        }, contentType: 'application/json'),
+        options: Options(
+          validateStatus: (status) {
+            if (status == null) return false;
+            if (status >= 200 && status < 300) {
+              return true;
+            }
+            if (status == 404) {
+              result = true;
+            }
+            return false;
+          },
+          headers: {
+            'X-Last-Known-Revision': revision,
+          },
+          contentType: 'application/json',
+        ),
       );
       revision = response.data['revision'];
       return true;

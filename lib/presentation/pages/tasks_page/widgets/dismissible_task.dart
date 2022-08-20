@@ -207,8 +207,7 @@ class _DismissibleTaskState extends State<DismissibleTask>
                         color: Theme.of(context).primaryIconTheme.color,
                       ),
                       onPressed: () {
-                        print(widget.task);
-                        ref.read(navigationProvider).navigateToEditPage(arguments: TaskModel.copy(task: widget.task));
+                        ref.read(navigationProvider).navigateToEditPage(task: TaskModel.copy(task: widget.task));
                       },
                       constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
                     );

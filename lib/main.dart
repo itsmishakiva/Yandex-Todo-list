@@ -13,6 +13,7 @@ import 'package:todo_list/data/reposiroty/data_repository.dart';
 import 'package:todo_list/data/web/web_service.dart';
 import 'package:todo_list/presentation/app.dart';
 import 'package:todo_list/presentation/navigation/navigation_controller.dart';
+import 'package:todo_list/presentation/navigation/router_delegate.dart';
 
 import 'firebase_options.dart';
 
@@ -21,7 +22,11 @@ Provider loggerProvider = Provider(
 );
 
 Provider navigationProvider = Provider(
-      (ref) => NavigationController(),
+      (ref) => NavigationController(ref),
+);
+
+ChangeNotifierProvider<TasksRouterDelegate> navigationProvider1 = ChangeNotifierProvider(
+    (ref) => TasksRouterDelegate(),
 );
 
 FutureProvider<FirebaseRemoteConfig> remoteConfigProvider = FutureProvider((ref) async => await getConfig());

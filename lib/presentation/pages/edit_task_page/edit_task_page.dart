@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:todo_list/data/reposiroty/data_repository.dart';
 import 'package:todo_list/main.dart';
 import 'package:todo_list/presentation/pages/edit_task_page/edit_task_controller.dart';
 import 'package:todo_list/presentation/pages/edit_task_page/widgets/calendar/calendar_dialog.dart';
@@ -15,7 +16,8 @@ import '../../../domain/task_model.dart';
 import '../widgets/date_text.dart';
 
 class EditTaskPage extends ConsumerStatefulWidget {
-  const EditTaskPage({Key? key}) : super(key: key);
+  const EditTaskPage({Key? key, this.taskId}) : super(key: key);
+  final String? taskId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => EditTaskPageState();
@@ -25,15 +27,19 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
   final TextEditingController _textController = TextEditingController();
   bool synced = false;
 
-  void initData(BuildContext context, WidgetRef ref) {
-    print('e');
+  void initData(BuildContext context, WidgetRef ref) async {
+    TaskModel? args;
+    List<TaskModel> tasks = await ref.read(dataProvider).getAllTasksStream().last;
+    for (var element in tasks) {
+      if (widget.taskId == element.id) {
+        args = element;
+        break;
+      }
+    }
+    print(args?.id);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var controller = ref.read(editPageProvider.notifier);
       var loc = AppLocalizations.of(context)!;
-      var args = ModalRoute
-          .of(context)!
-          .settings
-          .arguments as TaskModel?;
       if (args != null) {
         _textController.text = args.text;
         controller.initData(
@@ -48,7 +54,6 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('f');
     var state = ref.watch(editPageProvider);
     var controller = ref.read(editPageProvider.notifier);
     if (!synced) {
@@ -273,7 +278,6 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
                                     if (value == false) {
                                       state.task.deadline = null;
                                       controller.updateTask(state.task);
-                                      print(state.task.deadline);
                                       return;
                                     }
                                     int? chosenDate =
