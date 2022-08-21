@@ -3,6 +3,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../domain/task_model.dart';
+import 'db_map_converter.dart';
 
 class DBClient {
   final Ref ref;
@@ -13,7 +14,7 @@ class DBClient {
 
   static Future<void> openDataBase() async {
     database = openDatabase(
-      join(await getDatabasesPath(), 'todo_db.db'),
+      join(await getDatabasesPath(), 'new_todo_db.db'),
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE tasks('
@@ -37,7 +38,7 @@ class DBClient {
     Database db = await database;
     await db.insert(
       'tasks',
-      task.toMap(),
+      DBMapConverter.convertTask(task.toJson()),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -55,7 +56,7 @@ class DBClient {
     Database db = await database;
     await db.update(
       'tasks',
-      task.toMap(),
+      DBMapConverter.convertTask(task.toJson()),
       where: 'id = ?',
       whereArgs: [task.id],
     );
@@ -67,7 +68,7 @@ class DBClient {
     List<TaskModel> tasks = [];
     for (int i = 0; i < maps.length; i++) {
       if (maps[i]['is_deleted'] == 1) {
-        tasks.add(TaskModel.fromMap(maps[i]));
+        tasks.add(TaskModel.fromJson(maps[i]));
       }
     }
     return tasks;
@@ -79,7 +80,7 @@ class DBClient {
     List<TaskModel> tasks = [];
     for (int i = 0; i < maps.length; i++) {
       if (maps[i]['is_deleted'] != 1) {
-        tasks.add(TaskModel.fromMap(maps[i]));
+        tasks.add(TaskModel.fromJson(maps[i]));
       }
     }
     return tasks;

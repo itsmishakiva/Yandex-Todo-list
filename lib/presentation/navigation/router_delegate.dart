@@ -20,7 +20,6 @@ class TasksRouterDelegate extends RouterDelegate<TaskRoutePath>
 
   @override
   Widget build(BuildContext context) {
-    print('id: $_selectedTaskId 404: $show404 new: $newTask');
     return Navigator(
       key: navigatorKey,
       pages: [
@@ -60,7 +59,6 @@ class TasksRouterDelegate extends RouterDelegate<TaskRoutePath>
 
   @override
   Future<void> setNewRoutePath(TaskRoutePath configuration) async {
-    print('b');
     if (configuration.unknown) {
       _selectedTaskId = null;
       show404 = true;
@@ -79,7 +77,6 @@ class TasksRouterDelegate extends RouterDelegate<TaskRoutePath>
 
   @override
   TaskRoutePath get currentConfiguration {
-    print('a');
     if (show404) {
       return TaskRoutePath.unknown();
     }
@@ -94,7 +91,6 @@ class TasksRouterDelegate extends RouterDelegate<TaskRoutePath>
   }
 
   void handleTaskTapped(String? taskId) {
-    print('f');
     _selectedTaskId = taskId;
     if (taskId == null) newTask = true;
     notifyListeners();

@@ -30,7 +30,7 @@ class WebService {
     getRevision();
     List<Map<String, dynamic>> apiTasks = [];
     for (var element in tasks) {
-      apiTasks.add(element.toApiMap());
+      apiTasks.add(element.toJson());
     }
     try {
       Response response = await dio.patch(
@@ -53,9 +53,10 @@ class WebService {
       Response response = await dio.get('/list');
       List<TaskModel> results = [];
       for (Map<String, dynamic> task in response.data['list']) {
-        results.add(TaskModel.fromApiMap(task));
+        results.add(TaskModel.fromJson(task));
       }
       revision = response.data['revision'];
+      print(results[0].toJson());
       return results;
     } catch (e) {
       ref.read(loggerProvider).fine('ERROR GETTING TASKS FROM WEB $e');
@@ -71,9 +72,9 @@ class WebService {
         options: Options(headers: {
           'X-Last-Known-Revision': revision,
           "Host": "beta.mrdekk.ru",
-          "Content-Length": jsonEncode({'element': task.toApiMap()}).length,
+          "Content-Length": jsonEncode({'element': task.toJson()}).length,
         }, contentType: 'application/json'),
-        data: jsonEncode({'element': task.toApiMap()}),
+        data: jsonEncode({'element': task.toJson()}),
       );
       revision = response.data['revision'];
     } catch (e) {
@@ -120,9 +121,9 @@ class WebService {
         options: Options(headers: {
           'X-Last-Known-Revision': revision,
           "Host": "beta.mrdekk.ru",
-          "Content-Length": jsonEncode({'element': task.toApiMap()}).length,
+          "Content-Length": jsonEncode({'element': task.toJson()}).length,
         }, contentType: 'application/json'),
-        data: jsonEncode({'element': task.toApiMap()}),
+        data: jsonEncode({'element': task.toJson()}),
       );
       revision = response.data['revision'];
     } catch (e) {

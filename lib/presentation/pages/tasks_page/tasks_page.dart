@@ -212,16 +212,14 @@ class TasksPage extends StatelessWidget {
                                                       .removeTask(task);
                                                 },
                                                 onMarkedDone: () async {
-                                                  snapshot.data![index].done =
-                                                      true;
+                                                  snapshot.data![index] = snapshot.data![index].copyWith(done: true,);
                                                   ref
                                                       .read(dataProvider)
                                                       .updateTask(
                                                           snapshot.data![index]);
                                                 },
                                                 onCheckBoxChanged: (value) async {
-                                                  snapshot.data![index].done =
-                                                      !snapshot.data![index].done;
+                                                  snapshot.data![index] = snapshot.data![index].copyWith(done: !snapshot.data![index].done,);
                                                   ref
                                                       .read(dataProvider)
                                                       .updateTask(

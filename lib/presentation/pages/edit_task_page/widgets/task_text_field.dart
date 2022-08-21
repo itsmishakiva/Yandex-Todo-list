@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../domain/task_model.dart';
+import '../edit_task_controller.dart';
 
 class TaskTextField extends StatelessWidget {
   const TaskTextField({
@@ -12,7 +14,7 @@ class TaskTextField extends StatelessWidget {
         super(key: key);
 
   final TextEditingController _textController;
-  final TaskModel? task;
+  final TaskModel task;
 
   @override
   Widget build(BuildContext context) {
@@ -38,25 +40,31 @@ class TaskTextField extends StatelessWidget {
                     blurRadius: 2.0,
                   ),
                 ]),
-            child: TextField(
-              controller: _textController,
-              maxLines: null,
-              minLines: 4,
-              onChanged: (value) {
-                task!.text = value;
-              },
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context)!.needToDo,
-                hintStyle: Theme.of(context).textTheme.subtitle2,
-                isDense: true,
-                filled: true,
-                fillColor: Theme.of(context).primaryColor,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(8.0),
+            child: Consumer(builder: (context, ref, child) {
+              return TextField(
+                controller: _textController,
+                maxLines: null,
+                minLines: 4,
+                onChanged: (value) {
+                  ref.read(editPageProvider.notifier).updateTask(
+                        task.copyWith(
+                          text: value,
+                        ),
+                      );
+                },
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!.needToDo,
+                  hintStyle: Theme.of(context).textTheme.subtitle2,
+                  isDense: true,
+                  filled: true,
+                  fillColor: Theme.of(context).primaryColor,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
           ),
           const SizedBox(height: 20),
         ],

@@ -29,14 +29,14 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
 
   void initData(BuildContext context, WidgetRef ref) async {
     TaskModel? args;
-    List<TaskModel> tasks = await ref.read(dataProvider).getAllTasksStream().last;
+    List<TaskModel> tasks =
+        await ref.read(dataProvider).getAllTasksStream().last;
     for (var element in tasks) {
       if (widget.taskId == element.id) {
         args = element;
         break;
       }
     }
-    print(args?.id);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var controller = ref.read(editPageProvider.notifier);
       var loc = AppLocalizations.of(context)!;
@@ -72,24 +72,22 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
           value: SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
             statusBarIconBrightness:
-            SchedulerBinding.instance.window.platformBrightness ==
-                Brightness.light
-                ? Brightness.dark
-                : Brightness.light,
+                SchedulerBinding.instance.window.platformBrightness ==
+                        Brightness.light
+                    ? Brightness.dark
+                    : Brightness.light,
             statusBarBrightness:
-            SchedulerBinding.instance.window.platformBrightness ==
-                Brightness.light
-                ? Brightness.light
-                : Brightness.dark,
+                SchedulerBinding.instance.window.platformBrightness ==
+                        Brightness.light
+                    ? Brightness.light
+                    : Brightness.dark,
           ),
           child: SafeArea(
             child: CustomScrollView(
               slivers: [
                 SliverAppBar(
                   pinned: true,
-                  backgroundColor: Theme
-                      .of(context)
-                      .scaffoldBackgroundColor,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   leading: IconButton(
                     onPressed: () async {
                       ref.read(navigationProvider).pop();
@@ -99,11 +97,7 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
                     icon: SvgPicture.asset(
                       'assets/close.svg',
                       width: 24,
-                      color: Theme
-                          .of(context)
-                          .textTheme
-                          .headline1!
-                          .color,
+                      color: Theme.of(context).textTheme.headline1!.color,
                     ),
                   ),
                   actions: [
@@ -115,23 +109,23 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TaskTextField(
-                          textController: _textController, task: state.task),
+                        textController: _textController,
+                        task: state.task,
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: PopupMenuButton<String>(
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
+                          color: Theme.of(context).primaryColor,
                           position: PopupMenuPosition.over,
                           offset: Offset(
                             8,
                             state.importanceValue ==
-                                AppLocalizations.of(context)!.high
+                                    AppLocalizations.of(context)!.high
                                 ? 96
                                 : (state.importanceValue ==
-                                AppLocalizations.of(context)!.low
-                                ? 48
-                                : 0),
+                                        AppLocalizations.of(context)!.low
+                                    ? 48
+                                    : 0),
                           ),
                           tooltip: '',
                           itemBuilder: (context) {
@@ -141,8 +135,7 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
                               AppLocalizations.of(context)!.high,
                             ]
                                 .map(
-                                  (value) =>
-                                  PopupMenuItem<String>(
+                                  (value) => PopupMenuItem<String>(
                                     value: value,
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 16.0,
@@ -155,31 +148,29 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
                                         child: Text(
                                           value,
                                           style: value ==
-                                              AppLocalizations.of(context)!
-                                                  .high
-                                              ? Theme
-                                              .of(context)
-                                              .textTheme
-                                              .headline5
-                                              : Theme
-                                              .of(context)
-                                              .textTheme
-                                              .subtitle1,
+                                                  AppLocalizations.of(context)!
+                                                      .high
+                                              ? Theme.of(context)
+                                                  .textTheme
+                                                  .headline5
+                                              : Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle1,
                                         ),
                                       ),
                                     ),
                                   ),
-                            )
+                                )
                                 .toList();
                           },
                           onSelected: (value) {
                             if (value == AppLocalizations.of(context)!.low) {
-                              state.task.importance = 'low';
+                              state.task = state.task.copyWith(importance: 'low');
                             } else if (value ==
                                 AppLocalizations.of(context)!.high) {
-                              state.task.importance = 'important';
+                              state.task = state.task.copyWith(importance: 'important');
                             } else {
-                              state.task.importance = 'basic';
+                              state.task = state.task.copyWith(importance: 'basic');
                             }
                             controller.changeImportanceValue(value);
                           },
@@ -199,24 +190,15 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
                                   Text(
                                     AppLocalizations.of(context)!.importance,
                                     style:
-                                    Theme
-                                        .of(context)
-                                        .textTheme
-                                        .bodyText1,
+                                        Theme.of(context).textTheme.bodyText1,
                                   ),
                                   Text(
                                     state.importanceValue ??
                                         AppLocalizations.of(context)!.no,
                                     style: state.importanceValue ==
-                                        AppLocalizations.of(context)!.high
-                                        ? Theme
-                                        .of(context)
-                                        .textTheme
-                                        .headline5
-                                        : Theme
-                                        .of(context)
-                                        .textTheme
-                                        .headline3,
+                                            AppLocalizations.of(context)!.high
+                                        ? Theme.of(context).textTheme.headline5
+                                        : Theme.of(context).textTheme.headline3,
                                   ),
                                 ],
                               ),
@@ -244,23 +226,17 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
                                   Text(
                                     AppLocalizations.of(context)!.do_until,
                                     style:
-                                    Theme
-                                        .of(context)
-                                        .textTheme
-                                        .bodyText1,
+                                        Theme.of(context).textTheme.bodyText1,
                                   ),
                                   const SizedBox(height: 4),
                                   if (state.task.deadline != null)
                                     DateText(
                                       dateTime:
-                                      DateTime.fromMillisecondsSinceEpoch(
+                                          DateTime.fromMillisecondsSinceEpoch(
                                         100 * state.task.deadline!,
                                       ),
                                       style:
-                                      Theme
-                                          .of(context)
-                                          .textTheme
-                                          .headline6,
+                                          Theme.of(context).textTheme.headline6,
                                     ),
                                 ],
                               ),
@@ -269,30 +245,29 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
                                 height: 20,
                                 child: Switch(
                                   activeColor:
-                                  Theme
-                                      .of(context)
-                                      .colorScheme
-                                      .primary,
+                                      Theme.of(context).colorScheme.primary,
                                   value: state.task.deadline != null,
                                   onChanged: (value) async {
                                     if (value == false) {
-                                      state.task.deadline = null;
+                                      state.task = state.task.copyWith(deadline: null);
                                       controller.updateTask(state.task);
                                       return;
                                     }
                                     int? chosenDate =
                                         (await showDialog<DateTime?>(
-                                          context: context,
-                                          builder: (context) {
-                                            return CalendarDialog(
-                                              task: state.task,
-                                            );
-                                          },
-                                        ))
+                                      context: context,
+                                      builder: (context) {
+                                        return CalendarDialog(
+                                          task: state.task,
+                                        );
+                                      },
+                                    ))
                                             ?.millisecondsSinceEpoch;
-                                    state.task.deadline = chosenDate == null
-                                        ? null
-                                        : chosenDate ~/ 100;
+                                    state.task = state.task.copyWith(
+                                      deadline: chosenDate == null
+                                          ? null
+                                          : chosenDate ~/ 100,
+                                    );
                                     controller.updateTask(state.task);
                                   },
                                 ),

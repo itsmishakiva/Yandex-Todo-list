@@ -42,21 +42,21 @@ class DataRepository with ChangeNotifier {
   }
 
   void insertTask(TaskModel task) async {
-    task.deviceId = await getId();
+    task = task.copyWith(deviceId: await getId());
     await _dbClient.insertTask(task);
     notifyListeners();
     _webService.addTask(task);
   }
 
   void updateTask(TaskModel task) async {
-    task.deviceId = await getId();
+    task = task.copyWith(deviceId: await getId());
     await _dbClient.updateTask(task);
     notifyListeners();
     _webService.updateTask(task);
   }
 
   void removeTask(TaskModel task) async {
-    _dbClient.updateTask(task..isDeleted = true);
+    _dbClient.updateTask(task.copyWith(isDeleted: true));
     notifyListeners();
     bool removed = await _webService.removeTask(task);
     if (removed) {
@@ -77,7 +77,7 @@ class DataRepository with ChangeNotifier {
     for (TaskModel webTask in await _webService.getTasks()) {
       bool found = false;
       for (TaskModel dbTask in activeTasks) {
-        if (webTask.id == dbTask.id && (webTask.updatedAt ?? 0) > (dbTask.updatedAt ?? 0)) {
+        if (webTask.id == dbTask.id && (webTask.changedAt ?? 0) > (dbTask.changedAt ?? 0)) {
           await _dbClient.updateTask(webTask);
         } else if (webTask.id == dbTask.id) {
           found = true;

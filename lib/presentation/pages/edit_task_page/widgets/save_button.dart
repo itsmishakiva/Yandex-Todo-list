@@ -14,10 +14,11 @@ class SaveButton extends ConsumerWidget {
     required this.task,
   }) : super(key: key);
 
-  final TaskModel? task;
+  final TaskModel task;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    TaskModel saveTask = task.copyWith();
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextButton(
@@ -27,15 +28,13 @@ class SaveButton extends ConsumerWidget {
           ),
         ),
         onPressed: () {
-          task!.updatedAt =
-              DateTime.now().millisecondsSinceEpoch ~/ 100;
-          if (task!.text.isNotEmpty && task!.text.trim().isNotEmpty) {
-            if (task!.createdAt == null) {
-              task!.createdAt =
-                  DateTime.now().millisecondsSinceEpoch ~/ 100;
-              ref.read(dataProvider).insertTask(task!);
+          saveTask = saveTask.copyWith(changedAt: DateTime.now().millisecondsSinceEpoch ~/ 100);
+          if (saveTask.text.isNotEmpty && saveTask.text.trim().isNotEmpty) {
+            if (saveTask.createdAt == null) {
+              saveTask = saveTask = saveTask.copyWith(createdAt: DateTime.now().millisecondsSinceEpoch ~/ 100);
+              ref.read(dataProvider).insertTask(saveTask);
             } else {
-              ref.read(dataProvider).updateTask(task!);
+              ref.read(dataProvider).updateTask(saveTask);
             }
             ref.read(editPageProvider.notifier).clearData();
             ref.read(navigationProvider).pop();
