@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:todo_list/data/local/db_client.dart';
 import 'package:todo_list/data/web/web_service.dart';
+import 'package:todo_list/main.dart';
 
 import '../../domain/task_model.dart';
 
@@ -42,6 +44,7 @@ class DataRepository with ChangeNotifier {
   }
 
   void insertTask(TaskModel task) async {
+    ref.read(analyticsProvider).logEvent(name: 'Task added');
     task = task.copyWith(deviceId: await getId());
     await _dbClient.insertTask(task);
     notifyListeners();
@@ -49,6 +52,7 @@ class DataRepository with ChangeNotifier {
   }
 
   void updateTask(TaskModel task) async {
+    ref.read(analyticsProvider).logEvent(name: 'Task updated');
     task = task.copyWith(deviceId: await getId());
     await _dbClient.updateTask(task);
     notifyListeners();
@@ -56,6 +60,7 @@ class DataRepository with ChangeNotifier {
   }
 
   void removeTask(TaskModel task) async {
+    ref.read(analyticsProvider).logEvent(name: 'Task removed');
     _dbClient.updateTask(task.copyWith(isDeleted: true));
     notifyListeners();
     bool removed = await _webService.removeTask(task);

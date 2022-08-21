@@ -14,14 +14,12 @@ class NavigationController {
   Ref ref;
 
   void navigateToEditPage({TaskModel? task}) {
+    ref.read(analyticsProvider).logEvent(name: 'Navigated to edit page');
     ref.read(navigationProvider1).handleTaskTapped(task?.id);
   }
 
-  void closeDialog() {
-
-  }
-
   void pop() {
+    ref.read(analyticsProvider).logEvent(name: 'Page closed');
     ref.read(navigationProvider1).goToHome();
   }
 

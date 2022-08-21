@@ -56,7 +56,6 @@ class WebService {
         results.add(TaskModel.fromJson(task));
       }
       revision = response.data['revision'];
-      print(results[0].toJson());
       return results;
     } catch (e) {
       ref.read(loggerProvider).fine('ERROR GETTING TASKS FROM WEB $e');
