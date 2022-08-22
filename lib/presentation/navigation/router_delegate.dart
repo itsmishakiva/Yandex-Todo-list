@@ -1,22 +1,23 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_list/presentation/navigation/task_route_path.dart';
 import 'package:todo_list/presentation/pages/edit_task_page/edit_task_page.dart';
 import 'package:todo_list/presentation/pages/not_found_page/not_found_page.dart';
 
 import '../../domain/task_model.dart';
+import '../../main.dart';
 import '../pages/tasks_page/tasks_page.dart';
 
 class TasksRouterDelegate extends RouterDelegate<TaskRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<TaskRoutePath> {
   @override
   final GlobalKey<NavigatorState> navigatorKey;
-
+  final Ref ref;
   String? _selectedTaskId;
   bool show404 = false;
   bool newTask = false;
 
-  TasksRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+  TasksRouterDelegate(this.ref) : navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +91,15 @@ class TasksRouterDelegate extends RouterDelegate<TaskRoutePath>
         : TaskRoutePath.task(taskId: _selectedTaskId);
   }
 
-  void handleTaskTapped(String? taskId) {
-    _selectedTaskId = taskId;
-    if (taskId == null) newTask = true;
+  void navigateToEditPage({TaskModel? task}) {
+    ref.read(analyticsProvider).logEvent(name: 'Navigated to edit page');
+    _selectedTaskId = task?.id;
+    if (task?.id == null) newTask = true;
     notifyListeners();
   }
 
-  void goToHome() {
+  void pop() {
+    ref.read(analyticsProvider).logEvent(name: 'Navigated to home page');
     _selectedTaskId = null;
     newTask = false;
     show404 = false;

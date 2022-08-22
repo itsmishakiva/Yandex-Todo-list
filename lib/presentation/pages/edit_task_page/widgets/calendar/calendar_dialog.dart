@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:todo_list/main.dart';
 import 'package:todo_list/presentation/pages/edit_task_page/widgets/calendar_header_text.dart';
 
 import '../../../../../domain/task_model.dart';

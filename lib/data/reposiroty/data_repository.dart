@@ -2,9 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:todo_list/data/local/db_client.dart';
@@ -13,14 +11,9 @@ import 'package:todo_list/main.dart';
 
 import '../../domain/task_model.dart';
 
-ChangeNotifierProvider<DataRepository> dataProvider = ChangeNotifierProvider<
-    DataRepository>(
-      (ref) =>
-      DataRepository(
-        DBClient(ref),
-        WebService(ref),
-        ref
-      ),
+ChangeNotifierProvider<DataRepository> dataProvider =
+    ChangeNotifierProvider<DataRepository>(
+  (ref) => DataRepository(DBClient(ref), WebService(ref), ref),
 );
 
 class DataRepository with ChangeNotifier {
@@ -82,7 +75,8 @@ class DataRepository with ChangeNotifier {
     for (TaskModel webTask in await _webService.getTasks()) {
       bool found = false;
       for (TaskModel dbTask in activeTasks) {
-        if (webTask.id == dbTask.id && (webTask.changedAt ?? 0) > (dbTask.changedAt ?? 0)) {
+        if (webTask.id == dbTask.id &&
+            (webTask.changedAt ?? 0) > (dbTask.changedAt ?? 0)) {
           await _dbClient.updateTask(webTask);
         } else if (webTask.id == dbTask.id) {
           found = true;
@@ -106,7 +100,7 @@ class DataRepository with ChangeNotifier {
           if (!synced) {
             try {
               await _syncData();
-            } catch(e) {
+            } catch (e) {
               if (kDebugMode) {
                 Logger log = Logger('data_logger');
                 log.fine(e);

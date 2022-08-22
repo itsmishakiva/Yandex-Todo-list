@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo_list/main.dart';
-import 'package:todo_list/presentation/navigation/navigation_controller.dart';
 
 import '../../../../domain/task_model.dart';
 import '../../widgets/date_text.dart';
@@ -13,7 +12,8 @@ class DismissibleTask extends StatefulWidget {
     required this.task,
     required this.onCheckBoxChanged,
     required this.onDelete,
-    required this.onMarkedDone, this.shadows,
+    required this.onMarkedDone,
+    this.shadows,
   }) : super(key: key);
 
   final TaskModel task;
@@ -104,19 +104,22 @@ class _DismissibleTaskState extends State<DismissibleTask>
               return Transform.translate(
                 offset: Offset(
                     _animationController.value *
-                        MediaQuery.of(context).size.width >
-                        -72
+                                MediaQuery.of(context).size.width >
+                            -72
                         ? 0
                         : _animationController.value *
-                        MediaQuery.of(context).size.width +
-                        72,
+                                MediaQuery.of(context).size.width +
+                            72,
                     0),
                 child: child!,
               );
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: SvgPicture.asset('assets/delete.svg', color: Colors.white,)
+              child: SvgPicture.asset(
+                'assets/delete.svg',
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -189,7 +192,8 @@ class _DismissibleTaskState extends State<DismissibleTask>
                           padding: const EdgeInsets.only(top: 4.0),
                           child: DateText(
                             dateTime: DateTime.fromMillisecondsSinceEpoch(
-                                widget.task.deadline! * 100),
+                              widget.task.deadline! * 100,
+                            ),
                           ),
                         )
                     ],
@@ -207,9 +211,14 @@ class _DismissibleTaskState extends State<DismissibleTask>
                         color: Theme.of(context).primaryIconTheme.color,
                       ),
                       onPressed: () {
-                        ref.read(navigationProvider).navigateToEditPage(task: widget.task.copyWith());
+                        ref
+                            .read(navigationProvider)
+                            .navigateToEditPage(task: widget.task);
                       },
-                      constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+                      constraints: const BoxConstraints(
+                        minWidth: 24,
+                        minHeight: 24,
+                      ),
                     );
                   },
                 ),

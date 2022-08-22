@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_list/main.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../domain/task_model.dart';

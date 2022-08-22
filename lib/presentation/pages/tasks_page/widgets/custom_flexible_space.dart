@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -26,8 +25,8 @@ class CustomFlexibleSpace extends StatelessWidget {
         if (settings == null) return const SizedBox();
         final deltaExtent = settings.maxExtent - settings.minExtent;
         final translation =
-        (1.0 - (settings.currentExtent - settings.minExtent) / deltaExtent)
-            .clamp(0.0, 1.0);
+            (1.0 - (settings.currentExtent - settings.minExtent) / deltaExtent)
+                .clamp(0.0, 1.0);
         final start = max(0.0, 1.0 - expandedHeight / deltaExtent);
         const end = 1.0;
         final currentValue = 1.0 - Interval(start, end).transform(translation);
@@ -47,8 +46,8 @@ class CustomFlexibleSpace extends StatelessWidget {
                   Text(
                     customTitle ?? AppLocalizations.of(context)!.myTasks,
                     style: Theme.of(context).textTheme.headline1?.copyWith(
-                      fontSize: 20 + 12 * currentValue,
-                    ),
+                          fontSize: 20 + 12 * currentValue,
+                        ),
                   ),
                   SizedBox(height: currentValue * 6),
                   Opacity(
@@ -56,8 +55,8 @@ class CustomFlexibleSpace extends StatelessWidget {
                     child: Text(
                       '${AppLocalizations.of(context)!.done_task} — $doneTasksCount',
                       style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        fontSize: 16 * currentValue,
-                      ),
+                            fontSize: 16 * currentValue,
+                          ),
                     ),
                   ),
                 ],
