@@ -28,6 +28,7 @@ class App extends ConsumerWidget {
       supportedLocales: const [
         Locale('ru', ''),
       ],
+      debugShowCheckedModeBanner: false,
     );
   }
 }

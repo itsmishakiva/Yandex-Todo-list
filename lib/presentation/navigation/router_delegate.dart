@@ -92,14 +92,14 @@ class TasksRouterDelegate extends RouterDelegate<TaskRoutePath>
   }
 
   void navigateToEditPage({TaskModel? task}) {
-    ref.read(analyticsProvider).logEvent(name: 'Navigated to edit page');
+    ref.read(analyticsProvider).logEvent(name: 'navigated_to_edit_page');
     _selectedTaskId = task?.id;
     if (task?.id == null) newTask = true;
     notifyListeners();
   }
 
   void pop() {
-    ref.read(analyticsProvider).logEvent(name: 'Navigated to home page');
+    ref.read(analyticsProvider).logEvent(name: 'navigated_to_home_page');
     _selectedTaskId = null;
     newTask = false;
     show404 = false;

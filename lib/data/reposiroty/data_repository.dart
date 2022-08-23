@@ -37,7 +37,7 @@ class DataRepository with ChangeNotifier {
   }
 
   void insertTask(TaskModel task) async {
-    ref.read(analyticsProvider).logEvent(name: 'Task added');
+    ref.read(analyticsProvider).logEvent(name: 'task_added');
     task = task.copyWith(deviceId: await getId());
     await _dbClient.insertTask(task);
     notifyListeners();
@@ -45,7 +45,7 @@ class DataRepository with ChangeNotifier {
   }
 
   void updateTask(TaskModel task) async {
-    ref.read(analyticsProvider).logEvent(name: 'Task updated');
+    ref.read(analyticsProvider).logEvent(name: 'task_updated');
     task = task.copyWith(deviceId: await getId());
     await _dbClient.updateTask(task);
     notifyListeners();
@@ -53,7 +53,7 @@ class DataRepository with ChangeNotifier {
   }
 
   void removeTask(TaskModel task) async {
-    ref.read(analyticsProvider).logEvent(name: 'Task removed');
+    ref.read(analyticsProvider).logEvent(name: 'task_removed');
     _dbClient.updateTask(task.copyWith(isDeleted: true));
     notifyListeners();
     bool removed = await _webService.removeTask(task);
