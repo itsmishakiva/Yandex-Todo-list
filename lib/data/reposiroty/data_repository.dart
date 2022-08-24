@@ -72,7 +72,8 @@ class DataRepository with ChangeNotifier {
       }
     }
     List<TaskModel> activeTasks = await _dbClient.getActiveTasks();
-    for (TaskModel webTask in await _webService.getTasks()) {
+    var tasks = await _webService.getTasks();
+    for (TaskModel webTask in tasks) {
       bool found = false;
       for (TaskModel dbTask in activeTasks) {
         if (webTask.id == dbTask.id &&
@@ -97,9 +98,11 @@ class DataRepository with ChangeNotifier {
         onListen: () async {
           List<TaskModel> tasks = await _dbClient.getActiveTasks();
           controller.add(tasks);
+          print('a');
           if (!synced) {
             try {
               await _syncData();
+              controller.add(await _dbClient.getActiveTasks());
             } catch (e) {
               if (kDebugMode) {
                 Logger log = Logger('data_logger');
