@@ -52,6 +52,7 @@ dependencies:
   firebase_remote_config: ^2.0.13
   firebase_analytics: ^9.3.0
   firebase_crashlytics:
+  flutter_flavorizr: ^2.1.4
 
 dev_dependencies:
   flutter_test:
@@ -118,3 +119,36 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flavorizr:
+  app:
+    android:
+      flavorDimensions: "flavor-type"
+    ios:
+
+  flavors:
+    dev:
+      app:
+        name: "DEV"
+
+      android:
+        applicationId: "com.example.todo_list.dev"
+        firebase:
+          config: "firebase/dev/google-services.json"
+
+      ios:
+        bundleId: "com.example.todoList.dev"
+        firebase:
+          config: "firebase/dev/GoogleService-Info.plist"
+
+    prod:
+      app:
+        name: "PROD"
+
+      android:
+        applicationId: "com.example.todo_list"
+        firebase:
+          config: "firebase/prod/GoogleService-Info.plist"
+      ios:
+        bundleId: "com.example.todoList"
+        firebase:
+          config: "firebase/prod/GoogleService-Info.plist"

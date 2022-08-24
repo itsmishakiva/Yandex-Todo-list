@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:todo_list/main.dart';
+import 'package:todo_list/providers.dart';
 
 import '../../../../domain/task_model.dart';
 import '../../widgets/date_text.dart';

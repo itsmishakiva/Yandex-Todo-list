@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:todo_list/main.dart';
+import 'package:todo_list/providers.dart';
 import 'package:todo_list/presentation/pages/tasks_page/tasks_page_controller.dart';
 import 'package:todo_list/presentation/pages/tasks_page/widgets/custom_flexible_space.dart';
 import 'package:todo_list/presentation/pages/tasks_page/widgets/dismissible_task.dart';

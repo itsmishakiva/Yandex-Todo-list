@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo_list/data/reposiroty/data_repository.dart';
-import 'package:todo_list/main.dart';
+import 'package:todo_list/providers.dart';
 import 'package:todo_list/presentation/pages/edit_task_page/edit_task_controller.dart';
 import 'package:todo_list/presentation/pages/edit_task_page/widgets/calendar/calendar_dialog.dart';
 import 'package:todo_list/presentation/pages/edit_task_page/widgets/delete_button.dart';

@@ -5,8 +5,9 @@ import 'package:todo_list/presentation/pages/edit_task_page/edit_task_page.dart'
 import 'package:todo_list/presentation/pages/not_found_page/not_found_page.dart';
 
 import '../../domain/task_model.dart';
-import '../../main.dart';
+import '../../providers.dart';
 import '../pages/tasks_page/tasks_page.dart';
+import '../pages/widgets/flavor_banner.dart';
 
 class TasksRouterDelegate extends RouterDelegate<TaskRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<TaskRoutePath> {
@@ -21,40 +22,42 @@ class TasksRouterDelegate extends RouterDelegate<TaskRoutePath>
 
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      key: navigatorKey,
-      pages: [
-        const MaterialPage(
-          key: ValueKey('TasksListPage'),
-          child: TasksPage(),
-        ),
-        if (show404)
+    return FlavorBanner(
+      child: Navigator(
+        key: navigatorKey,
+        pages: [
           const MaterialPage(
-            key: ValueKey('UnknownPage'),
-            child: NotFoundPage(),
-          )
-        else if (newTask)
-          const MaterialPage(
-            key: ValueKey('EditTaskPage'),
-            child: EditTaskPage(),
-          )
-        else if (_selectedTaskId != null)
-          MaterialPage(
-            key: const ValueKey('EditTaskPage'),
-            child: EditTaskPage(
-              taskId: _selectedTaskId,
-            ),
+            key: ValueKey('TasksListPage'),
+            child: TasksPage(),
           ),
-      ],
-      onPopPage: (route, result) {
-        if (!route.didPop(result)) {
-          return false;
-        }
-        _selectedTaskId = null;
-        show404 = false;
-        notifyListeners();
-        return true;
-      },
+          if (show404)
+            const MaterialPage(
+              key: ValueKey('UnknownPage'),
+              child: NotFoundPage(),
+            )
+          else if (newTask)
+            const MaterialPage(
+              key: ValueKey('EditTaskPage'),
+              child: EditTaskPage(),
+            )
+          else if (_selectedTaskId != null)
+            MaterialPage(
+              key: const ValueKey('EditTaskPage'),
+              child: EditTaskPage(
+                taskId: _selectedTaskId,
+              ),
+            ),
+        ],
+        onPopPage: (route, result) {
+          if (!route.didPop(result)) {
+            return false;
+          }
+          _selectedTaskId = null;
+          show404 = false;
+          notifyListeners();
+          return true;
+        },
+      ),
     );
   }
 

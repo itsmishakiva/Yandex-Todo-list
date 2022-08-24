@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_list/main.dart';
+import 'package:todo_list/providers.dart';
 import 'package:todo_list/presentation/constants/project_theme_data.dart';
 import 'package:todo_list/presentation/navigation/task_route_information_parser.dart';
 

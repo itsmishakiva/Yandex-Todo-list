@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:todo_list/data/local/db_client.dart';
 import 'package:todo_list/data/web/web_service.dart';
-import 'package:todo_list/main.dart';
+import 'package:todo_list/providers.dart';
 
 import '../../domain/task_model.dart';
 

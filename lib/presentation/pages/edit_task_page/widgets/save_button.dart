@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_list/domain/task_model.dart';
-import 'package:todo_list/main.dart';
+import 'package:todo_list/providers.dart';
 
 import '../../../../data/reposiroty/data_repository.dart';
 import '../edit_task_controller.dart';
