@@ -253,6 +253,7 @@ class TasksPage extends StatelessWidget {
         builder: (context, ref, child) {
           return FloatingActionButton(
             backgroundColor: Theme.of(context).colorScheme.surface,
+            tooltip: 'add_task',
             elevation: 6,
             onPressed: () {
               ref.read(navigationProvider).navigateToEditPage();

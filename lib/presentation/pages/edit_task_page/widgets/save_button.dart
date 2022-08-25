@@ -21,12 +21,13 @@ class SaveButton extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextButton(
+        key: Key('save'),
         style: ButtonStyle(
           fixedSize: MaterialStateProperty.all(
             const Size(100, 40),
           ),
         ),
-        onPressed: () {
+        onPressed: () async {
           saveTask = saveTask.copyWith(
             changedAt: DateTime.now().millisecondsSinceEpoch ~/ 100,
           );
@@ -35,7 +36,7 @@ class SaveButton extends ConsumerWidget {
               saveTask = saveTask = saveTask.copyWith(
                 createdAt: DateTime.now().millisecondsSinceEpoch ~/ 100,
               );
-              ref.read(dataProvider).insertTask(saveTask);
+              await ref.read(dataProvider).insertTask(saveTask);
             } else {
               ref.read(dataProvider).updateTask(saveTask);
             }

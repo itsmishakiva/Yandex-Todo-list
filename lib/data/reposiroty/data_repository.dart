@@ -36,7 +36,7 @@ class DataRepository with ChangeNotifier {
     return 'Strange device with no id';
   }
 
-  void insertTask(TaskModel task) async {
+  Future<void> insertTask(TaskModel task) async {
     ref.read(analyticsProvider).logEvent(name: 'task_added');
     task = task.copyWith(deviceId: await getId());
     await _dbClient.insertTask(task);
@@ -98,7 +98,6 @@ class DataRepository with ChangeNotifier {
         onListen: () async {
           List<TaskModel> tasks = await _dbClient.getActiveTasks();
           controller.add(tasks);
-          print('a');
           if (!synced) {
             try {
               await _syncData();

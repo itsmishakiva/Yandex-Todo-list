@@ -14,7 +14,10 @@ class DBClient {
 
   static Future<void> openDataBase() async {
     database = openDatabase(
-      join(await getDatabasesPath(), 'new_todo_db3.db'),
+      join(
+        await getDatabasesPath(),
+        'new_todo_db.db',
+      ),
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE tasks('
