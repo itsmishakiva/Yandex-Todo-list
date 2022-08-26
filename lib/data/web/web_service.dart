@@ -8,7 +8,7 @@ import '../../domain/task_model.dart';
 
 class WebService {
   int? revision;
-  final Ref ref;
+  final Ref? ref;
 
   WebService(this.ref);
 
@@ -44,7 +44,7 @@ class WebService {
       );
       revision = response.data['revision'];
     } catch (e) {
-      ref.read(loggerProvider).fine('ERROR SYNCING WEB $e');
+      ref?.read(loggerProvider).fine('ERROR SYNCING WEB $e');
     }
   }
 
@@ -58,7 +58,7 @@ class WebService {
       revision = response.data['revision'];
       return results;
     } catch (e) {
-      ref.read(loggerProvider).fine('ERROR GETTING TASKS FROM WEB $e');
+      ref?.read(loggerProvider).fine('ERROR GETTING TASKS FROM WEB $e');
       return [];
     }
   }
@@ -77,7 +77,7 @@ class WebService {
       );
       revision = response.data['revision'];
     } catch (e) {
-      ref.read(loggerProvider).fine('UPDATING TASK WEB ERROR $e');
+      ref?.read(loggerProvider).fine('UPDATING TASK WEB ERROR $e');
     }
   }
 
@@ -107,7 +107,7 @@ class WebService {
       revision = response.data['revision'];
       return true;
     } catch (e) {
-      ref.read(loggerProvider).fine('DELETING TASK WEB ERROR $e');
+      ref?.read(loggerProvider).fine('DELETING TASK WEB ERROR $e');
       return result;
     }
   }
@@ -126,7 +126,7 @@ class WebService {
       );
       revision = response.data['revision'];
     } catch (e) {
-      ref.read(loggerProvider).fine('ADDING TASK WEB ERROR $e');
+      ref?.read(loggerProvider).fine('ADDING TASK WEB ERROR $e');
     }
   }
 }

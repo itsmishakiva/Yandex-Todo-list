@@ -6,11 +6,11 @@ import 'edit_task_page_state.dart';
 
 var editPageProvider =
     StateNotifierProvider<EditTaskController, EditTaskPageState>(
-  (ref) => EditTaskController(ref),
+  (ref) => EditTaskController(),
 );
 
 class EditTaskController extends StateNotifier<EditTaskPageState> {
-  EditTaskController(this.ref)
+  EditTaskController()
       : super(
           EditTaskPageState(
             TaskModel(
@@ -20,8 +20,6 @@ class EditTaskController extends StateNotifier<EditTaskPageState> {
             ),
           ),
         );
-
-  final Ref ref;
 
   void initData(
       {required TaskModel task,

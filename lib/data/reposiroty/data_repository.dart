@@ -13,13 +13,13 @@ import '../../domain/task_model.dart';
 
 ChangeNotifierProvider<DataRepository> dataProvider =
     ChangeNotifierProvider<DataRepository>(
-  (ref) => DataRepository(DBClient(ref), WebService(ref), ref),
+  (ref) => DataRepository(DBClient(), WebService(ref), ref),
 );
 
 class DataRepository with ChangeNotifier {
   final DBClient _dbClient;
   final WebService _webService;
-  final Ref ref;
+  final Ref? ref;
   bool synced = false;
 
   DataRepository(this._dbClient, this._webService, this.ref);
@@ -37,23 +37,23 @@ class DataRepository with ChangeNotifier {
   }
 
   Future<void> insertTask(TaskModel task) async {
-    ref.read(analyticsProvider).logEvent(name: 'task_added');
+    ref?.read(analyticsProvider).logEvent(name: 'task_added');
     task = task.copyWith(deviceId: await getId());
     await _dbClient.insertTask(task);
     notifyListeners();
     _webService.addTask(task);
   }
 
-  void updateTask(TaskModel task) async {
-    ref.read(analyticsProvider).logEvent(name: 'task_updated');
+  Future<void> updateTask(TaskModel task) async {
+    ref?.read(analyticsProvider).logEvent(name: 'task_updated');
     task = task.copyWith(deviceId: await getId());
     await _dbClient.updateTask(task);
     notifyListeners();
     _webService.updateTask(task);
   }
 
-  void removeTask(TaskModel task) async {
-    ref.read(analyticsProvider).logEvent(name: 'task_removed');
+  Future<void> removeTask(TaskModel task) async {
+    ref?.read(analyticsProvider).logEvent(name: 'task_removed');
     _dbClient.updateTask(task.copyWith(isDeleted: true));
     notifyListeners();
     bool removed = await _webService.removeTask(task);

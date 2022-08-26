@@ -6,9 +6,7 @@ import '../../domain/task_model.dart';
 import 'db_map_converter.dart';
 
 class DBClient {
-  final Ref ref;
-
-  DBClient(this.ref);
+  DBClient();
 
   static late Future<Database> database;
 

@@ -8,4 +8,11 @@ class EditTaskPageState {
 
   TaskModel task;
   String? importanceValue;
+
+  EditTaskPageState copyWith({TaskModel? task, String? importanceValue}) {
+    return EditTaskPageState(
+      task ?? this.task,
+      importanceValue: importanceValue ?? this.importanceValue,
+    );
+  }
 }
