@@ -6,20 +6,20 @@ class TaskRouteInformationParser extends RouteInformationParser<TaskRoutePath> {
   Future<TaskRoutePath> parseRouteInformation(
       RouteInformation routeInformation) async {
     final uri = Uri.parse(routeInformation.location ?? '');
-    
+
     if (uri.pathSegments.isEmpty) {
       return TaskRoutePath.home();
     }
-    
+
     if (uri.pathSegments.length == 2) {
       if (uri.pathSegments[0] != 'task') return TaskRoutePath.unknown();
       return TaskRoutePath.task(taskId: uri.pathSegments[1]);
     }
-    
+
     if (uri.pathSegments.length == 1 && uri.pathSegments[0] == 'task') {
       return TaskRoutePath.task();
     }
-    
+
     return TaskRoutePath.unknown();
   }
 

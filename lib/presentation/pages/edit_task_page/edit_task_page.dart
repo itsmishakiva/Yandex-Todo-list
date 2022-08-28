@@ -155,9 +155,11 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
                             state.task = state.task.copyWith(importance: 'low');
                           } else if (value ==
                               AppLocalizations.of(context)!.high) {
-                            state.task = state.task.copyWith(importance: 'important');
+                            state.task =
+                                state.task.copyWith(importance: 'important');
                           } else {
-                            state.task = state.task.copyWith(importance: 'basic');
+                            state.task =
+                                state.task.copyWith(importance: 'basic');
                           }
                           controller.changeImportanceValue(value);
                         },
@@ -176,8 +178,7 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
                               children: [
                                 Text(
                                   AppLocalizations.of(context)!.importance,
-                                  style:
-                                      Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                                 Text(
                                   state.importanceValue ??
@@ -212,8 +213,7 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
                               children: [
                                 Text(
                                   AppLocalizations.of(context)!.do_until,
-                                  style:
-                                      Theme.of(context).textTheme.bodyText1,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                                 const SizedBox(height: 4),
                                 if (state.task.deadline != null)
@@ -236,7 +236,8 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
                                 value: state.task.deadline != null,
                                 onChanged: (value) async {
                                   if (value == false) {
-                                    state.task = state.task.copyWith(deadline: null);
+                                    state.task =
+                                        state.task.copyWith(deadline: null);
                                     controller.updateTask(state.task);
                                     return;
                                   }
