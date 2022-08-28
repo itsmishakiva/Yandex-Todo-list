@@ -9,6 +9,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('Test message', (tester) async {
-    expect(0,0);
+    expect(0, 0);
   });
 }
