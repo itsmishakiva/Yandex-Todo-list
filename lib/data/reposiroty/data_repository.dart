@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:todo_list/data/local/db_client.dart';
 import 'package:todo_list/data/web/web_service.dart';
