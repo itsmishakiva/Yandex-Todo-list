@@ -8,7 +8,7 @@ class FlavorBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (F.appFlavor == Flavor.DEV) {
+    if (F.appFlavor == Flavor.dev) {
       return Banner(
         message: 'DEV',
         location: BannerLocation.topEnd,

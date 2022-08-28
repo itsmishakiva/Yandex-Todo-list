@@ -8,7 +8,7 @@ import 'data/local/db_client.dart';
 import 'flavors.dart';
 
 void main() async {
-  F.appFlavor = Flavor.PROD;
+  F.appFlavor = Flavor.prod;
   WidgetsFlutterBinding.ensureInitialized();
   await DBClient.openDataBase();
   await DataRepository.getId();

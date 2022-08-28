@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_list/providers.dart';
 
 import '../../domain/task_model.dart';
 

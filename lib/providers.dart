@@ -5,11 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
-import 'package:todo_list/data/local/db_client.dart';
-import 'package:todo_list/presentation/app.dart';
 import 'package:todo_list/presentation/navigation/router_delegate.dart';
 
 import 'firebase_options.dart';
@@ -18,16 +15,17 @@ Provider loggerProvider = Provider(
   (ref) => Logger('logger'),
 );
 
-ChangeNotifierProvider<TasksRouterDelegate> navigationProvider =
-    ChangeNotifierProvider(
-  (ref) => TasksRouterDelegate(ref.read(analyticsProvider)),
+FutureProvider<FirebaseRemoteConfig> remoteConfigProvider = FutureProvider(
+  (ref) async => await getConfig(),
 );
-
-FutureProvider<FirebaseRemoteConfig> remoteConfigProvider =
-    FutureProvider((ref) async => await getConfig());
 
 Provider<FirebaseAnalytics> analyticsProvider =
     Provider((ref) => FirebaseAnalytics.instance);
+
+ChangeNotifierProvider<TasksRouterDelegate> navigationProvider =
+    ChangeNotifierProvider(
+  (ref) => TasksRouterDelegate(ref),
+);
 
 Future<FirebaseRemoteConfig> getConfig() async {
   await Firebase.initializeApp(

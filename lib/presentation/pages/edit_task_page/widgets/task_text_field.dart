@@ -42,7 +42,7 @@ class TaskTextField extends StatelessWidget {
                 ]),
             child: Consumer(builder: (context, ref, child) {
               return TextField(
-                key: Key('text_field'),
+                key: const Key('text_field'),
                 controller: _textController,
                 maxLines: null,
                 minLines: 4,

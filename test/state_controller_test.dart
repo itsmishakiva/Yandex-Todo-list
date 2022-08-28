@@ -9,10 +9,11 @@ void main() {
       EditTaskController controller = EditTaskController();
       var state = controller.debugState.copyWith();
       TaskModel task = TaskModel(
-          id: 'test_id',
-          text: 'new_text',
-          done: false,
-          importance: 'important');
+        id: 'test_id',
+        text: 'new_text',
+        done: false,
+        importance: 'important',
+      );
       controller.updateTask(task);
       controller.changeImportanceValue('basic');
       controller.clearData();

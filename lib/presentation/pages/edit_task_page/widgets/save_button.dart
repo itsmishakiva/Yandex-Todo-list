@@ -21,7 +21,7 @@ class SaveButton extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextButton(
-        key: Key('save'),
+        key: const Key('save'),
         style: ButtonStyle(
           fixedSize: MaterialStateProperty.all(
             const Size(100, 40),

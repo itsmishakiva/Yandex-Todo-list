@@ -16,10 +16,9 @@ class TasksRouterDelegate extends RouterDelegate<TaskRoutePath>
   String? _selectedTaskId;
   bool show404 = false;
   bool newTask = false;
-  final dynamic analytics;
+  final Ref ref;
 
-  TasksRouterDelegate(this.analytics)
-      : navigatorKey = GlobalKey<NavigatorState>();
+  TasksRouterDelegate(this.ref) : navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -96,14 +95,14 @@ class TasksRouterDelegate extends RouterDelegate<TaskRoutePath>
   }
 
   void navigateToEditPage({TaskModel? task}) {
-    analytics.logEvent(name: 'navigated_to_edit_page');
+    ref.read(analyticsProvider).logEvent(name: 'navigated_to_edit_page');
     _selectedTaskId = task?.id;
     if (task?.id == null) newTask = true;
     notifyListeners();
   }
 
   void pop() {
-    analytics.logEvent(name: 'navigated_to_home_page');
+    ref.read(analyticsProvider).logEvent(name: 'navigated_to_home_page');
     _selectedTaskId = null;
     newTask = false;
     show404 = false;
