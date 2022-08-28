@@ -1,34 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>CLIENT_ID</key>
-	<string>291031193540-p8jmmblkl2v4d9crk43hka6jr09omh6f.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.291031193540-p8jmmblkl2v4d9crk43hka6jr09omh6f</string>
-	<key>API_KEY</key>
-	<string>AIzaSyCnh16tvRaXSI4t4wra0laMyaMDjXIKaSE</string>
-	<key>GCM_SENDER_ID</key>
-	<string>291031193540</string>
-	<key>PLIST_VERSION</key>
-	<string>1</string>
-	<key>BUNDLE_ID</key>
-	<string>com.example.todoList</string>
-	<key>PROJECT_ID</key>
-	<string>todo-list-b6abb</string>
-	<key>STORAGE_BUCKET</key>
-	<string>todo-list-b6abb.appspot.com</string>
-	<key>IS_ADS_ENABLED</key>
-	<false></false>
-	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
-	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
-	<key>IS_GCM_ENABLED</key>
-	<true></true>
-	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
-	<key>GOOGLE_APP_ID</key>
-	<string>1:291031193540:ios:c919c7f734b3a427793691</string>
-</dict>
-</plist>
+{
+  "project_info": {
+    "project_number": "291031193540",
+    "project_id": "todo-list-b6abb",
+    "storage_bucket": "todo-list-b6abb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291031193540:android:9a8831b39d3bd528793691",
+        "android_client_info": {
+          "package_name": "com.example.todo_list"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "291031193540-1p1mc7j3qvnbi46q5cbkm0rblji40nde.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXe_l4nqYlP84ActoqD_1sYljkE-FvFTE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "291031193540-1p1mc7j3qvnbi46q5cbkm0rblji40nde.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "291031193540-p8jmmblkl2v4d9crk43hka6jr09omh6f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.todoList"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
