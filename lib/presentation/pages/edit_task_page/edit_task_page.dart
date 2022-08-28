@@ -217,9 +217,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                 builder: (context) {
                                   return CalendarDialog(task: task!);
                                 },
-                              ))?.millisecondsSinceEpoch;
+                              ))
+                                  ?.millisecondsSinceEpoch;
                               task!.deadline =
-                              chosenDate == null ? null : chosenDate ~/ 100;
+                                  chosenDate == null ? null : chosenDate ~/ 100;
                               setState(() {});
                             },
                           ),

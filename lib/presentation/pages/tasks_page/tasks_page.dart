@@ -107,7 +107,8 @@ class _TasksPageState extends State<TasksPage> {
                                 left: 8.0,
                                 right: 8.0,
                                 top: index == 0 ? 8.0 : 0,
-                                bottom: index == snapshot.data!.length ? 8.0 : 0),
+                                bottom:
+                                    index == snapshot.data!.length ? 8.0 : 0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                 topRight: index == 0
@@ -142,14 +143,14 @@ class _TasksPageState extends State<TasksPage> {
                                 if (index == 0)
                                   Container(
                                     height: 8,
-                                    color:
-                                    Theme.of(context).primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 index == snapshot.data!.length
                                     ? Material(
                                         color: Theme.of(context).primaryColor,
                                         child: Padding(
-                                          padding: const EdgeInsets.only(bottom: 8.0),
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8.0),
                                           child: InkWell(
                                             onTap: () {
                                               editTask();
@@ -175,34 +176,36 @@ class _TasksPageState extends State<TasksPage> {
                                           ),
                                         ),
                                       )
-                                    : !snapshot.data![index].done || showDoneTasks
+                                    : !snapshot.data![index].done ||
+                                            showDoneTasks
                                         ? DismissibleTask(
-                                          shadows: [
-                                            if (index != 0)
-                                            BoxShadow(
-                                              offset: const Offset(0, 0),
-                                              color: Theme.of(context).primaryColorDark,
-                                              blurRadius: 2.0,
-                                            ),
-                                          ],
-                                          task: snapshot.data![index],
-                                          onDelete: () async {
-                                            var task = snapshot.data![index];
-                                            snapshot.data!.removeAt(index);
-                                            data.removeTask(task);
-                                          },
-                                          onMarkedDone: () async {
-                                            snapshot.data![index].done = true;
-                                            data.updateTask(
-                                                snapshot.data![index]);
-                                          },
-                                          onCheckBoxChanged: (value) async {
-                                            snapshot.data![index].done =
-                                                !snapshot.data![index].done;
-                                            data.updateTask(
-                                                snapshot.data![index]);
-                                          },
-                                        )
+                                            shadows: [
+                                              if (index != 0)
+                                                BoxShadow(
+                                                  offset: const Offset(0, 0),
+                                                  color: Theme.of(context)
+                                                      .primaryColorDark,
+                                                  blurRadius: 2.0,
+                                                ),
+                                            ],
+                                            task: snapshot.data![index],
+                                            onDelete: () async {
+                                              var task = snapshot.data![index];
+                                              snapshot.data!.removeAt(index);
+                                              data.removeTask(task);
+                                            },
+                                            onMarkedDone: () async {
+                                              snapshot.data![index].done = true;
+                                              data.updateTask(
+                                                  snapshot.data![index]);
+                                            },
+                                            onCheckBoxChanged: (value) async {
+                                              snapshot.data![index].done =
+                                                  !snapshot.data![index].done;
+                                              data.updateTask(
+                                                  snapshot.data![index]);
+                                            },
+                                          )
                                         : const SizedBox(),
                               ],
                             ),

@@ -12,7 +12,8 @@ class DismissibleTask extends StatefulWidget {
     required this.task,
     required this.onCheckBoxChanged,
     required this.onDelete,
-    required this.onMarkedDone, this.shadows,
+    required this.onMarkedDone,
+    this.shadows,
   }) : super(key: key);
 
   final TaskModel task;
@@ -103,20 +104,22 @@ class _DismissibleTaskState extends State<DismissibleTask>
               return Transform.translate(
                 offset: Offset(
                     _animationController.value *
-                        MediaQuery.of(context).size.width >
-                        -72
+                                MediaQuery.of(context).size.width >
+                            -72
                         ? 0
                         : _animationController.value *
-                        MediaQuery.of(context).size.width +
-                        72,
+                                MediaQuery.of(context).size.width +
+                            72,
                     0),
                 child: child!,
               );
             },
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: SvgPicture.asset('assets/delete.svg', color: Colors.white,)
-            ),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: SvgPicture.asset(
+                  'assets/delete.svg',
+                  color: Colors.white,
+                )),
           ),
         ),
       ),
@@ -204,9 +207,12 @@ class _DismissibleTaskState extends State<DismissibleTask>
                     color: Theme.of(context).primaryIconTheme.color,
                   ),
                   onPressed: () {
-                    context.read<NavigationController>().navigateToTasksPage(arguments: widget.task);
+                    context
+                        .read<NavigationController>()
+                        .navigateToTasksPage(arguments: widget.task);
                   },
-                  constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+                  constraints:
+                      const BoxConstraints(minWidth: 24, minHeight: 24),
                 ),
               ],
             ),

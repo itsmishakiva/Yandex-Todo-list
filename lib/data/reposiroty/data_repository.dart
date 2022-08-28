@@ -64,7 +64,8 @@ class DataRepository with ChangeNotifier {
     for (TaskModel webTask in await _webService.getTasks()) {
       bool found = false;
       for (TaskModel dbTask in activeTasks) {
-        if (webTask.id == dbTask.id && (webTask.updatedAt ?? 0) > (dbTask.updatedAt ?? 0)) {
+        if (webTask.id == dbTask.id &&
+            (webTask.updatedAt ?? 0) > (dbTask.updatedAt ?? 0)) {
           await _dbClient.updateTask(webTask);
         } else if (webTask.id == dbTask.id) {
           found = true;
@@ -88,7 +89,7 @@ class DataRepository with ChangeNotifier {
           if (!synced) {
             try {
               await _syncData();
-            } catch(e) {
+            } catch (e) {
               if (kDebugMode) {
                 Logger log = Logger('data_logger');
                 log.fine(e);

@@ -5,7 +5,7 @@ class NavigationController {
 
   GlobalKey<NavigatorState> get key => _key;
 
-  void navigateTo (String routeName, {Object? arguments}) {
+  void navigateTo(String routeName, {Object? arguments}) {
     _key.currentState?.pushNamed(routeName, arguments: arguments);
   }
 
@@ -16,5 +16,4 @@ class NavigationController {
   void pop([dynamic result]) {
     return _key.currentState?.pop(result);
   }
-
 }

@@ -74,7 +74,7 @@ class WebService {
       );
       revision = response.data['revision'];
       return true;
-    } catch(e) {
+    } catch (e) {
       return false;
     }
   }

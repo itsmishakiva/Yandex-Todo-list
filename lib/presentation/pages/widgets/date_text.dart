@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DateText extends StatelessWidget {
-  const DateText({Key? key, required this.dateTime, this.style}) : super(key: key);
+  const DateText({Key? key, required this.dateTime, this.style})
+      : super(key: key);
 
   final DateTime dateTime;
   final TextStyle? style;

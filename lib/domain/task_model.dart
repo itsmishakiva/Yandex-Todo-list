@@ -53,7 +53,7 @@ class TaskModel {
       'changed_at': updatedAt,
       'importance': importance,
       'last_updated_by': deviceId,
-      'is_deleted' : isDeleted ? 1 : 0
+      'is_deleted': isDeleted ? 1 : 0
     };
   }
 

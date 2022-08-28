@@ -9,7 +9,8 @@ class ProjectThemeData {
       primaryColorDark: Colors.black.withOpacity(0.06),
       primaryColor: Colors.white,
       indicatorColor: Colors.black.withOpacity(0.06),
-      hoverColor: (importanceColor ?? const Color(0xFFFF3B30)).withOpacity(0.12),
+      hoverColor:
+          (importanceColor ?? const Color(0xFFFF3B30)).withOpacity(0.12),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           overlayColor: MaterialStateProperty.all(
@@ -22,7 +23,8 @@ class ProjectThemeData {
         primary: const Color(0xFF007AFF),
         onPrimary: Colors.white,
         secondary: const Color(0xFF34C759),
-        onSecondary: (importanceColor ?? const Color(0xFFFF3B30)).withOpacity(0.12),
+        onSecondary:
+            (importanceColor ?? const Color(0xFFFF3B30)).withOpacity(0.12),
         error: importanceColor ?? const Color(0xFFFF3B30),
         onError: Colors.white,
         background: Colors.white,

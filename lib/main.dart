@@ -14,7 +14,6 @@ import 'dart:developer' as dev;
 
 import 'firebase_options.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DBClient.openDataBase();
@@ -60,7 +59,7 @@ Future<FirebaseRemoteConfig> getConfig() async {
 }
 
 void initLogger() {
-  if(kDebugMode) {
+  if (kDebugMode) {
     Logger.root.level = Level.ALL;
     Logger.root.onRecord.listen((record) {
       dev.log('${record.level.name}: ${record.time}: ${record.message}');

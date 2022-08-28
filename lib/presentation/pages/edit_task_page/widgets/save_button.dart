@@ -25,12 +25,10 @@ class SaveButton extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          task!.updatedAt =
-              DateTime.now().millisecondsSinceEpoch ~/ 100;
+          task!.updatedAt = DateTime.now().millisecondsSinceEpoch ~/ 100;
           if (task!.text.isNotEmpty && task!.text.trim().isNotEmpty) {
             if (task!.createdAt == null) {
-              task!.createdAt =
-                  DateTime.now().millisecondsSinceEpoch ~/ 100;
+              task!.createdAt = DateTime.now().millisecondsSinceEpoch ~/ 100;
               context.read<DataRepository>().insertTask(task!);
             } else {
               context.read<DataRepository>().updateTask(task!);
