@@ -38,7 +38,7 @@ class SaveButton extends ConsumerWidget {
               );
               await ref.read(dataProvider).insertTask(saveTask);
             } else {
-              ref.read(dataProvider).updateTask(saveTask);
+              await ref.read(dataProvider).updateTask(saveTask);
             }
             ref.read(editPageProvider.notifier).clearData();
             ref.read(navigationProvider).pop();

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logging/logging.dart';
 import 'package:todo_list/data/local/db_client.dart';
 import 'package:todo_list/data/web/web_service.dart';
 import 'package:todo_list/providers.dart';
@@ -23,6 +22,7 @@ class DataRepository with ChangeNotifier {
   final Ref? ref;
   bool synced = false;
   static String? _id;
+  List<TaskModel> tasks = [];
 
   DataRepository(this._dbClient, this._webService, this.ref);
 
@@ -56,7 +56,7 @@ class DataRepository with ChangeNotifier {
 
   Future<void> removeTask(TaskModel task) async {
     ref?.read(analyticsProvider).logEvent(name: 'task_removed');
-    _dbClient.updateTask(task.copyWith(isDeleted: true));
+    await _dbClient.updateTask(task.copyWith(isDeleted: true));
     notifyListeners();
     bool removed = await _webService.removeTask(task);
     if (removed) {
@@ -91,9 +91,18 @@ class DataRepository with ChangeNotifier {
       }
     }
     await _webService.syncData(await _dbClient.getActiveTasks());
+    notifyListeners();
   }
 
-  Stream<List<TaskModel>> getAllTasksStream() {
+  Future<List<TaskModel>> getAllTasks() async {
+    tasks = await _dbClient.getActiveTasks();
+    if (!synced) {
+      _syncData();
+    }
+    return tasks;
+  }
+
+  /*Stream<List<TaskModel>> getAllTasksStream() {
     final Stream<List<TaskModel>> tasks = (() {
       late final StreamController<List<TaskModel>> controller;
       controller = StreamController<List<TaskModel>>(
@@ -117,5 +126,5 @@ class DataRepository with ChangeNotifier {
       return controller.stream;
     })();
     return tasks;
-  }
+  }*/
 }

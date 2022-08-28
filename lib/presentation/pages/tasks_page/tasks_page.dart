@@ -31,8 +31,9 @@ class TasksPage extends StatelessWidget {
         top: false,
         child: Consumer(
           builder: (context, ref, child) {
-            return StreamBuilder<List<TaskModel>>(
-              stream: ref.watch(dataProvider).getAllTasksStream(),
+            var data = ref.watch(dataProvider);
+            return FutureBuilder<List<TaskModel>>(
+              future: data.getAllTasks(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(
