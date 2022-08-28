@@ -4,12 +4,14 @@ import 'package:todo_list/presentation/app.dart';
 import 'package:todo_list/providers.dart';
 
 import 'data/local/db_client.dart';
+import 'data/reposiroty/data_repository.dart';
 import 'flavors.dart';
 
 void main() async {
   F.appFlavor = Flavor.DEV;
   WidgetsFlutterBinding.ensureInitialized();
   await DBClient.openDataBase();
+  await DataRepository.getId();
   initLogger();
   runApp(
     const ProviderScope(

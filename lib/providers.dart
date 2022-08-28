@@ -20,7 +20,7 @@ Provider loggerProvider = Provider(
 
 ChangeNotifierProvider<TasksRouterDelegate> navigationProvider =
     ChangeNotifierProvider(
-  (ref) => TasksRouterDelegate(ref),
+  (ref) => TasksRouterDelegate(ref.read(analyticsProvider)),
 );
 
 FutureProvider<FirebaseRemoteConfig> remoteConfigProvider =

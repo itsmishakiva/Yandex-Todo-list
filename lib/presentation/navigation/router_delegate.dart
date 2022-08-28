@@ -13,12 +13,13 @@ class TasksRouterDelegate extends RouterDelegate<TaskRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<TaskRoutePath> {
   @override
   final GlobalKey<NavigatorState> navigatorKey;
-  final Ref ref;
   String? _selectedTaskId;
   bool show404 = false;
   bool newTask = false;
+  final dynamic analytics;
 
-  TasksRouterDelegate(this.ref) : navigatorKey = GlobalKey<NavigatorState>();
+  TasksRouterDelegate(this.analytics)
+      : navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -95,14 +96,14 @@ class TasksRouterDelegate extends RouterDelegate<TaskRoutePath>
   }
 
   void navigateToEditPage({TaskModel? task}) {
-    ref.read(analyticsProvider).logEvent(name: 'navigated_to_edit_page');
+    analytics.logEvent(name: 'navigated_to_edit_page');
     _selectedTaskId = task?.id;
     if (task?.id == null) newTask = true;
     notifyListeners();
   }
 
   void pop() {
-    ref.read(analyticsProvider).logEvent(name: 'navigated_to_home_page');
+    analytics.logEvent(name: 'navigated_to_home_page');
     _selectedTaskId = null;
     newTask = false;
     show404 = false;

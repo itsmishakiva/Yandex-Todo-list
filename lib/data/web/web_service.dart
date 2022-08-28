@@ -8,9 +8,9 @@ import '../../domain/task_model.dart';
 
 class WebService {
   int? revision;
-  final Ref? ref;
+  final dynamic logger;
 
-  WebService(this.ref);
+  WebService(this.logger);
 
   Future<void> getRevision() async {
     if (revision == null) {
@@ -44,7 +44,7 @@ class WebService {
       );
       revision = response.data['revision'];
     } catch (e) {
-      ref?.read(loggerProvider).fine('ERROR SYNCING WEB $e');
+      logger.fine('ERROR SYNCING WEB $e');
     }
   }
 
@@ -58,7 +58,7 @@ class WebService {
       revision = response.data['revision'];
       return results;
     } catch (e) {
-      ref?.read(loggerProvider).fine('ERROR GETTING TASKS FROM WEB $e');
+      logger.fine('ERROR GETTING TASKS FROM WEB $e');
       return [];
     }
   }
@@ -77,7 +77,7 @@ class WebService {
       );
       revision = response.data['revision'];
     } catch (e) {
-      ref?.read(loggerProvider).fine('UPDATING TASK WEB ERROR $e');
+      logger.fine('UPDATING TASK WEB ERROR $e');
     }
   }
 
@@ -107,7 +107,7 @@ class WebService {
       revision = response.data['revision'];
       return true;
     } catch (e) {
-      ref?.read(loggerProvider).fine('DELETING TASK WEB ERROR $e');
+      logger.fine('DELETING TASK WEB ERROR $e');
       return result;
     }
   }
@@ -126,7 +126,7 @@ class WebService {
       );
       revision = response.data['revision'];
     } catch (e) {
-      ref?.read(loggerProvider).fine('ADDING TASK WEB ERROR $e');
+      logger.fine('ADDING TASK WEB ERROR $e');
     }
   }
 }

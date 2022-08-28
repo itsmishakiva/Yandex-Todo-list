@@ -13,47 +13,49 @@ import '../../domain/task_model.dart';
 
 ChangeNotifierProvider<DataRepository> dataProvider =
     ChangeNotifierProvider<DataRepository>(
-  (ref) => DataRepository(DBClient(), WebService(ref), ref),
+  (ref) => DataRepository(DBClient(), WebService(ref.read(loggerProvider)),
+      ref.read(analyticsProvider)),
 );
 
 class DataRepository with ChangeNotifier {
   final DBClient _dbClient;
   final WebService _webService;
-  final Ref? ref;
+  final dynamic analytics;
   bool synced = false;
+  static String? _id;
 
-  DataRepository(this._dbClient, this._webService, this.ref);
+  DataRepository(this._dbClient, this._webService, this.analytics);
 
-  Future<String> getId() async {
+  static Future<void> getId() async {
     var deviceInfo = DeviceInfoPlugin();
     if (Platform.isIOS) {
       var iosDeviceInfo = await deviceInfo.iosInfo;
-      return iosDeviceInfo.identifierForVendor ?? '';
+      _id = iosDeviceInfo.identifierForVendor ?? '';
     } else if (Platform.isAndroid) {
       var androidDeviceInfo = await deviceInfo.androidInfo;
-      return androidDeviceInfo.id ?? '';
+      _id = androidDeviceInfo.id ?? '';
     }
-    return 'Strange device with no id';
+    _id = 'Strange device with no id';
   }
 
   Future<void> insertTask(TaskModel task) async {
-    ref?.read(analyticsProvider).logEvent(name: 'task_added');
-    task = task.copyWith(deviceId: await getId());
+    analytics?.read(analyticsProvider).logEvent(name: 'task_added');
+    task = task.copyWith(deviceId: _id);
     await _dbClient.insertTask(task);
     notifyListeners();
     _webService.addTask(task);
   }
 
   Future<void> updateTask(TaskModel task) async {
-    ref?.read(analyticsProvider).logEvent(name: 'task_updated');
-    task = task.copyWith(deviceId: await getId());
+    analytics?.read(analyticsProvider).logEvent(name: 'task_updated');
+    task = task.copyWith(deviceId: _id);
     await _dbClient.updateTask(task);
     notifyListeners();
     _webService.updateTask(task);
   }
 
   Future<void> removeTask(TaskModel task) async {
-    ref?.read(analyticsProvider).logEvent(name: 'task_removed');
+    analytics?.read(analyticsProvider).logEvent(name: 'task_removed');
     _dbClient.updateTask(task.copyWith(isDeleted: true));
     notifyListeners();
     bool removed = await _webService.removeTask(task);
