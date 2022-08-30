@@ -28,8 +28,7 @@ class EditTaskPageState extends ConsumerState<EditTaskPage> {
 
   void initData(BuildContext context, WidgetRef ref) async {
     TaskModel? args;
-    List<TaskModel> tasks =
-        await ref.read(dataProvider).getAllTasks();
+    List<TaskModel> tasks = await ref.read(dataProvider).getAllTasks();
     for (var element in tasks) {
       if (widget.taskId == element.id) {
         args = element;
